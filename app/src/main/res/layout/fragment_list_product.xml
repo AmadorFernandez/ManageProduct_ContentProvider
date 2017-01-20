@@ -33,7 +33,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.jsw.MngProductDatabase.com.jsw.MngProductFragments.ListProduct_Fragment">
+    tools:context="com.afg.MngProductDatabase.com.jsw.MngProductFragments.ListProduct_Fragment">
 
     <ListView
         android:id="@android:id/list"
