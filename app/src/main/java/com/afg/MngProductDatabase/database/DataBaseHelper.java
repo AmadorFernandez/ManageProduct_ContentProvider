@@ -13,7 +13,7 @@ import android.os.Build;
 
 public final class DataBaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "ManageProduct.db";
     private Context context;
     private static volatile DataBaseHelper instance;

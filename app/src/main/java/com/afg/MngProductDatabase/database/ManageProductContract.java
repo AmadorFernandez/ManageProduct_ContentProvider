@@ -69,18 +69,21 @@ public class ManageProductContract  {
     public static class PharmacyEntry implements BaseColumns{
 
         public static final String TABLE_NAME = "pharmacy";
+        public static final String COLUMN_NAME = "ph_name";
         public static final String COLUMN_CIF = "ph_cif";
         public static final String COLUMN_ADDRESS = "ph_address";
         public static final String COLUMN_PHONE = "ph_phone";
         public static final String COLUMN_MAIL = "pr_mail";
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +
                 "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "%s TEXT NOT NULL,"+
                 "%s TEXT NOT NULL," +
                 "%s TEXT NOT NULL," +
                 "%s TEXT NOT NULL," +
                 "%s TEXT NOT NULL)",
                 TABLE_NAME,
                 _ID,
+                COLUMN_NAME,
                 COLUMN_CIF,
                 COLUMN_ADDRESS,
                 COLUMN_PHONE,
