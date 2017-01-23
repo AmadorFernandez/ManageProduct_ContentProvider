@@ -10,7 +10,7 @@ import java.util.Comparator;
  */
 
 public class Product implements Parcelable, Comparable<Product> {
-    int ID;
+    long ID;
     String name;
     String description;
     String brand;
@@ -34,7 +34,7 @@ public class Product implements Parcelable, Comparable<Product> {
 
 
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 
@@ -95,7 +95,7 @@ public class Product implements Parcelable, Comparable<Product> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(ID);
+        dest.writeLong(ID);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeString(brand);
@@ -128,5 +128,41 @@ public class Product implements Parcelable, Comparable<Product> {
             return this.getBrand().compareTo(product.getBrand());
         else
             return this.getName().compareTo(product.getName());
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setIdCategory(int idCategory) {
+        this.idCategory = idCategory;
     }
 }

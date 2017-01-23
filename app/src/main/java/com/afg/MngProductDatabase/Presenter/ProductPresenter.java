@@ -19,6 +19,7 @@ package com.afg.MngProductDatabase.Presenter;
 
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.DAO.ProductRepository;
+import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.afg.MngProductDatabase.interfaces.IProductPresenter;
 
 /**
@@ -26,6 +27,7 @@ import com.afg.MngProductDatabase.interfaces.IProductPresenter;
  */
 
 public class ProductPresenter implements IProductPresenter{
+
     View view;
 
     public ProductPresenter(IProductPresenter.View Vista){
@@ -34,7 +36,7 @@ public class ProductPresenter implements IProductPresenter{
 
     @Override
     public void loadProducts() {
-        if(ProductRepository.getProducts().isEmpty())
+        if(DataBaseManager.getInstance().getProducts().isEmpty())
             view.showEmptyState(true);
         else
             view.showProduct();
@@ -47,7 +49,7 @@ public class ProductPresenter implements IProductPresenter{
 
     @Override
     public void deleteProduct(Product product) {
-        ProductRepository.deleteProduct(product);
+        DataBaseManager.getInstance().deleteProduct(product);
         //Vuelve a cargar los productos y actualiza los productos.
         view.showMessage("Product Delete", product);
         loadProducts();
@@ -55,12 +57,13 @@ public class ProductPresenter implements IProductPresenter{
 
 
     public void addProduct(Product product){
-        ProductRepository.add(product);
+        DataBaseManager.getInstance().add(product);
         view.showProduct();
     }
 
     public void updateProduct(Product oldProduct, Product newProduct){
-        ProductRepository.deleteProduct(oldProduct);
+
+        DataBaseManager.getInstance().deleteProduct(oldProduct);
         this.addProduct(newProduct);
     }
 

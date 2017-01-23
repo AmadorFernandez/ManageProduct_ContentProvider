@@ -2,6 +2,7 @@ package com.afg.MngProductDatabase;
 
 
 import android.app.Application;
+import android.content.Context;
 
 import com.afg.MngProductDatabase.database.DataBaseHelper;
 
@@ -11,13 +12,18 @@ import com.afg.MngProductDatabase.database.DataBaseHelper;
 
 public class ManageProductApplications extends Application {
 
+    public static Context context;
 
+    public static Context getContext(){
 
+        return context;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        DataBaseHelper.getInstance(this).open();
+        this.context = this;
+        DataBaseHelper.getInstance().open();
 
     }
 }
