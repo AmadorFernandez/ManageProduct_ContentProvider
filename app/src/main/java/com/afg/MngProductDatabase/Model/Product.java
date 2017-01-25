@@ -93,6 +93,21 @@ public class Product implements Parcelable, Comparable<Product> {
         idCategory = in.readInt();
     }
 
+    public Product() {
+    }
+
+    public Product(String name, String description, String brand, String dosage, Double price, String stock, String image, int idCategory) {
+
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+        this.dosage = dosage;
+        this.price = price;
+        this.stock = stock;
+        this.image = image;
+        this.idCategory = idCategory;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(ID);

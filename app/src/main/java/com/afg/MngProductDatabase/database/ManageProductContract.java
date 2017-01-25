@@ -36,6 +36,11 @@ public class ManageProductContract  {
         public static final String COLUMN_STOCK = "pr_stock";
         public static final String COLUMN_IMAGE = "pr_image";
         public static final String COLUMN_CATEGORY = "pr_category";
+        public static final String[] ALL_COLUMNS = {ManageProductContract.ProductEntry._ID, ManageProductContract.ProductEntry.COLUMN_NAME,
+                ManageProductContract.ProductEntry.COLUMN_BRAND,ManageProductContract.ProductEntry.COLUMN_CATEGORY,
+                ManageProductContract.ProductEntry.COLUMN_DESCRIPTION, ManageProductContract.ProductEntry.COLUMN_DOSAGE,
+                ManageProductContract.ProductEntry.COLUMN_IMAGE, ManageProductContract.ProductEntry.COLUMN_PRICE,
+                ManageProductContract.ProductEntry.COLUMN_STOCK};
         public static final String REFERENCE_ID_CATEGORY = String.format("REFERENCES %s (%s) ON UPDATE CASCADE ON" +
                 " DELETE RESTRICT",  CategoryEntry.TABLE_NAME, CategoryEntry._ID);
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +

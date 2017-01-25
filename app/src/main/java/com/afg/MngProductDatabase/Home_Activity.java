@@ -17,6 +17,7 @@ package com.afg.MngProductDatabase;
  *  jose.gallardo994@gmail.com
  */
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -41,7 +42,7 @@ import com.afg.MngProductDatabase.utils.DialogoConfirmacion;
 
 public class Home_Activity extends AppCompatActivity implements ListProduct_Fragment.IListProductListener, ManageProduct_Fragment.IManageListener {
 
-    ProductPresenter mPresenter;
+    private ProductPresenter mPresenter;
     private ListProduct_Fragment mListProduct;
     private ManageProduct_Fragment mManageProduct;
     private Home_Fragment mHome;
@@ -72,6 +73,8 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent();
         showHome();
+
+
     }
 
     @Override
@@ -125,7 +128,7 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         if(oldProduct == null)
             mPresenter.addProduct(newProduct);
         else
-            mPresenter.updateProduct(oldProduct, newProduct);
+            mPresenter.updateProduct(newProduct);
 
         getSupportFragmentManager().popBackStack();
     }

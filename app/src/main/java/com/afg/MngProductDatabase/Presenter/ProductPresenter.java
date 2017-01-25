@@ -18,7 +18,6 @@ package com.afg.MngProductDatabase.Presenter;
  */
 
 import com.afg.MngProductDatabase.Model.Product;
-import com.afg.MngProductDatabase.DAO.ProductRepository;
 import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.afg.MngProductDatabase.interfaces.IProductPresenter;
 
@@ -44,7 +43,7 @@ public class ProductPresenter implements IProductPresenter{
 
     @Override
     public Product getProduct(int id) {
-        return ProductRepository.getProducts().get(id);
+        return DataBaseManager.getInstance().getProducts().get(id);
     }
 
     @Override
@@ -61,9 +60,9 @@ public class ProductPresenter implements IProductPresenter{
         view.showProduct();
     }
 
-    public void updateProduct(Product oldProduct, Product newProduct){
+    public void updateProduct(Product newProduct){
 
-        DataBaseManager.getInstance().deleteProduct(oldProduct);
+        DataBaseManager.getInstance().updateProduct(newProduct);
         this.addProduct(newProduct);
     }
 

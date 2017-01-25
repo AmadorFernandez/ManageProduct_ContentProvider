@@ -4,11 +4,11 @@ package com.afg.MngProductDatabase.database;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.afg.MngProductDatabase.Model.Product;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,9 +36,24 @@ public class DataBaseManager {
 
     }
 
-    public void updateProduct(Product product){
+    public void updateProduct(Product p){
 
-        
+
+        boolean result = false;
+        ContentValues params = new ContentValues();
+        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        params.put(ManageProductContract.ProductEntry.COLUMN_NAME, p.getName());
+        params.put(ManageProductContract.ProductEntry.COLUMN_BRAND, p.getBrand());
+        params.put(ManageProductContract.ProductEntry.COLUMN_CATEGORY, p.getIdCategory());
+        params.put(ManageProductContract.ProductEntry.COLUMN_DESCRIPTION, p.getDescription());
+        params.put(ManageProductContract.ProductEntry.COLUMN_DOSAGE, p.getDosage());
+        params.put(ManageProductContract.ProductEntry.COLUMN_IMAGE, p.getImage());
+        params.put(ManageProductContract.ProductEntry.COLUMN_PRICE, p.getPrice());
+        params.put(ManageProductContract.ProductEntry.COLUMN_STOCK, p.getStock());
+        String[] whereParams = {String.valueOf(p.getID())};
+        database.update(ManageProductContract.ProductEntry.TABLE_NAME,params, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
 
     }
 
@@ -68,10 +83,46 @@ public class DataBaseManager {
     }
 
     public List<Product> getProducts(){
-        return null;
+
+        ArrayList<Product> list = new ArrayList<Product>();
+        Product product;
+        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        Cursor cursor = database.query(ManageProductContract.ProductEntry.TABLE_NAME
+                ,ManageProductContract.ProductEntry.ALL_COLUMNS,
+                null,null,null,null,null);
+
+        if(cursor.moveToFirst()){
+
+            do{
+
+                product = new Product();
+                product.setID(cursor.getLong(0));
+                product.setName(cursor.getString(1));
+                product.setBrand(cursor.getString(2));
+                product.setIdCategory(cursor.getInt(3));
+                product.setDescription(cursor.getString(4));
+                product.setDosage(cursor.getString(5));
+                product.setImage(cursor.getString(6));
+                product.setPrice(cursor.getDouble(7));
+                product.setStock(cursor.getString(8));
+                list.add(product);
+
+            }while (cursor.moveToNext());
+        }
+
+
+        return list;
+
     }
 
-    public  void deleteProduct(Product product){
+    public  void deleteProduct(Product p){
+
+        ContentValues params = new ContentValues();
+        String[] whereParams = {String.valueOf(p.getID())};
+        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        database.delete(ManageProductContract.ProductEntry.TABLE_NAME, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
 
     }
 }

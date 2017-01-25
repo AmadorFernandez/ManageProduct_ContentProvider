@@ -5,6 +5,7 @@ package com.afg.MngProductDatabase.Model;
  */
 
 public class Category {
+
     int id;
     String name;
 
