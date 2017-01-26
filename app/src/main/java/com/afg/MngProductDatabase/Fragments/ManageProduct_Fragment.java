@@ -26,22 +26,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.afg.MngProductDatabase.Model.Product;
+import com.afg.MngProductDatabase.Presenter.CategoryPresenter;
 import com.afg.MngProductDatabase.R;
+import com.afg.MngProductDatabase.database.ManageProductContract;
+import com.afg.MngProductDatabase.interfaces.ICategoryPresenter;
 import com.afg.MngProductDatabase.interfaces.IProduct;
 
 import java.util.Random;
 
-public class ManageProduct_Fragment extends Fragment {
+public class ManageProduct_Fragment extends Fragment implements ICategoryPresenter.View {
 
     TextInputLayout mName, mTrademark, mDosage, mStock, mPrice, mDescription, mUrl;
     ImageView mImage;
     Spinner mCategory;
     Product p;
     boolean update = false;
+    SimpleCursorAdapter adapter;
+    private CategoryPresenter presenter;
 
     FloatingActionButton mFabSave;
     IManageListener mCallBack;
@@ -75,12 +82,21 @@ public class ManageProduct_Fragment extends Fragment {
         mDescription = (TextInputLayout) rootView.findViewById(R.id.til_descripcion);
         mFabSave = (FloatingActionButton)rootView.findViewById(R.id.fab_guardar);
         mCategory = (Spinner)rootView.findViewById(R.id.spinner);
+        presenter = new CategoryPresenter(this);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String[] from = {ManageProductContract.CategoryEntry.COLUMN_NAME};
+        int[] to = {android.R.id.text1};
+
+        adapter = new SimpleCursorAdapter(getContext(),android.R.layout.simple_spinner_item,
+                null, from, to, 0);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCategory.setAdapter(adapter);
+
 
         if(p != null){;
             //mImage.setImageResource(p.getImage());
@@ -105,6 +121,13 @@ public class ManageProduct_Fragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        presenter.getAllCategoies(adapter);
+
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mCallBack = (IManageListener)activity;
@@ -113,7 +136,7 @@ public class ManageProduct_Fragment extends Fragment {
     private void save(){
 
         mCallBack.saveProduct(p, new Product(
-                p.getID(),
+
                 mName.getEditText().getText().toString(),
                 mDescription.getEditText().getText().toString(),
                 mTrademark.getEditText().getText().toString(),

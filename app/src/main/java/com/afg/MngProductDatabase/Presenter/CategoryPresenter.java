@@ -1,4 +1,4 @@
-package com.afg.MngProductDatabase.Adapter;
+package com.afg.MngProductDatabase.Presenter;
 
 /*
  * Copyright (c) 2017 José Luis del Pino Gallardo.
@@ -17,19 +17,31 @@ package com.afg.MngProductDatabase.Adapter;
  *  jose.gallardo994@gmail.com
  */
 
-import android.content.Context;
 import android.database.Cursor;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.SimpleCursorAdapter;
+import android.widget.SpinnerAdapter;
+
+import com.afg.MngProductDatabase.database.DataBaseManager;
+import com.afg.MngProductDatabase.interfaces.ICategoryPresenter;
 
 /**
  * Created by usuario on 26/01/17.
  */
 
-public class SpinnerAdapter {
+public class CategoryPresenter implements ICategoryPresenter {
 
+    private ICategoryPresenter.View view;
 
+    public CategoryPresenter(ICategoryPresenter.View view){
 
+        this.view = view;
+    }
+
+    @Override
+    public void getAllCategoies(CursorAdapter adapter) {
+
+        Cursor cursor = DataBaseManager.getInstance().loadCategories();
+        adapter.swapCursor(cursor);
+
+    }
 }

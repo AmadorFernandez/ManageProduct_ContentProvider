@@ -18,6 +18,7 @@ package com.afg.MngProductDatabase.Fragments;
  */
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
@@ -51,6 +52,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     private TextView mEmpty;
     PopupMenu popup;
     private FloatingActionButton mFab;
+    private ProgressDialog dialog;
 
     private IListProductListener mCallback;
 
@@ -65,6 +67,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
         super.onCreate(savedInstance);
         mAdapter = new ProductAdapter(getContext());
         setRetainInstance(true);
+        dialog = new ProgressDialog(getContext());
 
         /**
          * Esta opcion le dice a la actitivity que este fragment tiene su propio menu y llama a todos
