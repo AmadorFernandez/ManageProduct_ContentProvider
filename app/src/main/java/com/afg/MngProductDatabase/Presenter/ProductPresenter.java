@@ -17,9 +17,17 @@ package com.afg.MngProductDatabase.Presenter;
  *  jose.gallardo994@gmail.com
  */
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.afg.MngProductDatabase.interfaces.IProductPresenter;
+
+import static com.afg.MngProductDatabase.ManageProductApplications.context;
 
 /**
  * Created by usuario on 9/12/16.
@@ -33,12 +41,20 @@ public class ProductPresenter implements IProductPresenter{
         this.view = Vista;
     }
 
+    /*
+
     @Override
     public void loadProducts() {
         if(DataBaseManager.getInstance().getProducts().isEmpty())
             view.showEmptyState(true);
         else
             view.showProduct();
+    }
+
+    */
+
+    public void loadProducts(){
+       new AsyncSqlite().execute();
     }
 
     @Override
@@ -55,6 +71,7 @@ public class ProductPresenter implements IProductPresenter{
     }
 
 
+
     public void addProduct(Product product){
         DataBaseManager.getInstance().add(product);
         view.showProduct();
@@ -63,11 +80,38 @@ public class ProductPresenter implements IProductPresenter{
     public void updateProduct(Product newProduct){
 
         DataBaseManager.getInstance().updateProduct(newProduct);
-        this.addProduct(newProduct);
+        view.showProduct();
+       // this.addProduct(newProduct);
     }
 
     @Override
     public void onDestroy() {
         this.view = null;
+    }
+
+  public  class AsyncSqlite extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            if(!isCancelled()) {
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (DataBaseManager.getInstance().getProducts().isEmpty())
+                    view.showEmptyState(true);
+                else
+                    view.showProduct();
+            }
+
+            return null;
+        }
+
+
+
+
     }
 }

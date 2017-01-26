@@ -20,7 +20,7 @@ public class Product implements Parcelable, Comparable<Product> {
     String image;
     int idCategory;
 
-    public Product(int ID, String name, String description, String brand, String dosage, Double price, String stock, String image, int idCategory) {
+    public Product(long ID, String name, String description, String brand, String dosage, Double price, String stock, String image, int idCategory) {
         this.ID = ID;
         this.name = name;
         this.description = description;
@@ -94,9 +94,12 @@ public class Product implements Parcelable, Comparable<Product> {
     }
 
     public Product() {
+
+        this.ID = 0;
     }
 
-    public Product(String name, String description, String brand, String dosage, Double price, String stock, String image, int idCategory) {
+    public Product(String name, String description, String brand, String dosage, Double price,
+                   String stock, String image, int idCategory) {
 
         this.name = name;
         this.description = description;

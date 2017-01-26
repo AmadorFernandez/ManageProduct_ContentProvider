@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.Product;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,6 +113,7 @@ public class DataBaseManager {
         }
 
 
+        DataBaseHelper.getInstance().closeDataBase();
         return list;
 
     }
@@ -123,6 +126,17 @@ public class DataBaseManager {
         database.delete(ManageProductContract.ProductEntry.TABLE_NAME, "_id = ?", whereParams);
         DataBaseHelper.getInstance().closeDataBase();
 
+
+    }
+
+    public Cursor loadCategories(){
+
+        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        Cursor cursor =  database.query(ManageProductContract.CategoryEntry.TABLE_NAME
+                ,ManageProductContract.CategoryEntry.ALL_COLUMS,
+                null,null,null,null,null);
+        DataBaseHelper.getInstance().closeDataBase();
+        return cursor;
 
     }
 }

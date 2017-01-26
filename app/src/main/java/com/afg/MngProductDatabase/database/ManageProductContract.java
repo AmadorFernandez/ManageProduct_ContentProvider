@@ -19,6 +19,7 @@ public class ManageProductContract  {
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (%s " +
                 "INTEGER PRIMARY KEY AUTOINCREMENT," + "%s TEXT NOT NULL)", TABLE_NAME,
                 BaseColumns._ID, COLUMN_NAME);
+        public static final String[] ALL_COLUMS = {String.valueOf(_ID), COLUMN_NAME};
 
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);

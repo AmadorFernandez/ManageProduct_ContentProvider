@@ -41,6 +41,7 @@ public class ManageProduct_Fragment extends Fragment {
     ImageView mImage;
     Spinner mCategory;
     Product p;
+    boolean update = false;
 
     FloatingActionButton mFabSave;
     IManageListener mCallBack;
@@ -91,6 +92,7 @@ public class ManageProduct_Fragment extends Fragment {
             mUrl.getEditText().setText(p.getImage());
             mCategory.setSelection(0);
             mDescription.getEditText().setText(p.getDescription());
+            update = true;
         }
 
         mFabSave.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +113,7 @@ public class ManageProduct_Fragment extends Fragment {
     private void save(){
 
         mCallBack.saveProduct(p, new Product(
-                new Random().nextInt(),
+                p.getID(),
                 mName.getEditText().getText().toString(),
                 mDescription.getEditText().getText().toString(),
                 mTrademark.getEditText().getText().toString(),
