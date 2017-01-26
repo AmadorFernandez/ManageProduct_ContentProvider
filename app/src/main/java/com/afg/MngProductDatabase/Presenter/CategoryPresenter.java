@@ -41,7 +41,7 @@ public class CategoryPresenter implements ICategoryPresenter {
     public void getAllCategoies(CursorAdapter adapter) {
 
         Cursor cursor = DataBaseManager.getInstance().loadCategories();
-        adapter.swapCursor(cursor);
+  //      adapter.swapCursor(cursor);
 
     }
 }

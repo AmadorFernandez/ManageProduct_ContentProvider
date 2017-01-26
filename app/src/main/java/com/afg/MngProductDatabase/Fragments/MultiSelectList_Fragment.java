@@ -64,7 +64,7 @@ public class MultiSelectList_Fragment extends ListFragment implements IProduct, 
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        mAdapter = new ProductAdapter(getContext());
+        mAdapter = new ProductAdapter(getContext(), this);
         mPresenter = new ProductPresenter(this);
         mChoicePresenteR = new ProductPresenter(this);
         setRetainInstance(true);
@@ -138,6 +138,16 @@ public class MultiSelectList_Fragment extends ListFragment implements IProduct, 
 
     @Override
     public void showMessage(String message, Product product) {
+
+    }
+
+    @Override
+    public void showProgressDialog() {
+
+    }
+
+    @Override
+    public void dismissProgressDialog() {
 
     }
 

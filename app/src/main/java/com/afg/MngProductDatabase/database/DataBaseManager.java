@@ -43,7 +43,7 @@ public class DataBaseManager {
 
         boolean result = false;
         ContentValues params = new ContentValues();
-        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         params.put(ManageProductContract.ProductEntry.COLUMN_NAME, p.getName());
         params.put(ManageProductContract.ProductEntry.COLUMN_BRAND, p.getBrand());
         params.put(ManageProductContract.ProductEntry.COLUMN_CATEGORY, p.getIdCategory());
@@ -63,7 +63,7 @@ public class DataBaseManager {
 
         boolean result = false;
         ContentValues params = new ContentValues();
-        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         params.put(ManageProductContract.ProductEntry.COLUMN_NAME, p.getName());
         params.put(ManageProductContract.ProductEntry.COLUMN_BRAND, p.getBrand());
         params.put(ManageProductContract.ProductEntry.COLUMN_CATEGORY, p.getIdCategory());
@@ -88,7 +88,7 @@ public class DataBaseManager {
 
         ArrayList<Product> list = new ArrayList<Product>();
         Product product;
-        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         Cursor cursor = database.query(ManageProductContract.ProductEntry.TABLE_NAME
                 ,ManageProductContract.ProductEntry.ALL_COLUMNS,
                 null,null,null,null,null);
@@ -122,7 +122,7 @@ public class DataBaseManager {
 
         ContentValues params = new ContentValues();
         String[] whereParams = {String.valueOf(p.getID())};
-        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         database.delete(ManageProductContract.ProductEntry.TABLE_NAME, "_id = ?", whereParams);
         DataBaseHelper.getInstance().closeDataBase();
 
@@ -131,7 +131,7 @@ public class DataBaseManager {
 
     public Cursor loadCategories(){
 
-        SQLiteDatabase database = DataBaseHelper.getInstance().getWritableDatabase();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         Cursor cursor =  database.query(ManageProductContract.CategoryEntry.TABLE_NAME
                 ,ManageProductContract.CategoryEntry.ALL_COLUMS,
                 null,null,null,null,null);

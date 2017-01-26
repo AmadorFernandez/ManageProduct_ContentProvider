@@ -18,6 +18,7 @@ package com.afg.MngProductDatabase.Adapter;
  */
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +27,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afg.MngProductDatabase.ManageProductApplications;
 import com.afg.MngProductDatabase.Model.Product;
+import com.afg.MngProductDatabase.Presenter.ProductPresenter;
 import com.afg.MngProductDatabase.R;
 import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by usuario on 18/11/16.
@@ -40,18 +44,49 @@ import java.util.Collections;
 
 public class ProductAdapter extends ArrayAdapter<Product> implements Serializable {
 
-    private Context contexto;
+    private Context context;
     private boolean ASC = true;
+    private ProductPresenter presenter;
+    private ProductPresenter.View view;
 
-    public ProductAdapter(Context context) {
+    public ProductAdapter(final Context context, final ProductPresenter.View view) {
 
         //Cuando aqui ponemos un tercer parametro, teneos que entener que el array interno es igual a este.
         //Por eso cuando hacia un clear se borraba el del DAO.
         //Para evitarlo o le hacemos un new ArayList (Lourdes) o a this le hacemos un addAll (Yo)
         super(context, R.layout.item_product);
-        this.contexto = context;
-        this.addAll(DataBaseManager.getInstance().getProducts());
-        refreshView();
+        this.context = context;
+        this.view = view;
+
+        new AsyncTask<Void, Void, List<Product>>() {
+            @Override
+            protected List<Product> doInBackground(Void... voids) {
+                return DataBaseManager.getInstance().getProducts();
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                view.showProgressDialog();
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                view.dismissProgressDialog();
+            }
+
+            @Override
+            protected void onPostExecute(List<Product> products) {
+                super.onPostExecute(products);
+                view.dismissProgressDialog();
+                addAll(products);
+                refreshView();
+            }
+        }.execute();
+
+
+
     }
 
     @NonNull
@@ -62,7 +97,7 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
         ProductHolder p;
 
         if (convertView == null){
-            LayoutInflater inflater = LayoutInflater.from(contexto);
+            LayoutInflater inflater = LayoutInflater.from(context);
 
             item = inflater.inflate(R.layout.item_product, null);
 
@@ -79,7 +114,7 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
         }else
             p = (ProductHolder) item.getTag();
 
-        Picasso.with(contexto).load(getItem(position).getImage()).into(p.img);
+        Picasso.with(context).load(getItem(position).getImage()).into(p.img);
         p.name.setText(getItem(position).getName());
         p.stock.setText(getItem(position).getStock());
         p.precio.setText(String.valueOf(getItem(position).getPrice()));
@@ -110,9 +145,37 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
     }
 
     public void updateListProduct(){
-        this.clear();
-        this.addAll(DataBaseManager.getInstance().getProducts());
-        refreshView();
+
+        new AsyncTask<Void, Void, List<Product>>() {
+            @Override
+            protected List<Product> doInBackground(Void... voids) {
+                return DataBaseManager.getInstance().getProducts();
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                view.showProgressDialog();
+
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                view.dismissProgressDialog();
+            }
+
+            @Override
+            protected void onPostExecute(List<Product> products) {
+                super.onPostExecute(products);
+                clear();
+                addAll(products);
+                refreshView();
+                view.dismissProgressDialog();
+            }
+        }.execute();
+
+
     }
 
     private void hideList(boolean hide){

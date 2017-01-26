@@ -35,5 +35,7 @@ public interface IProductPresenter {
         void showProduct();
         void showEmptyState(boolean show);
         void showMessage(String message, Product product);
+        void showProgressDialog();
+        void dismissProgressDialog();
     }
 }

@@ -65,9 +65,10 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        mAdapter = new ProductAdapter(getContext());
-        setRetainInstance(true);
         dialog = new ProgressDialog(getContext());
+        mAdapter = new ProductAdapter(getContext(), this);
+        setRetainInstance(true);
+
 
         /**
          * Esta opcion le dice a la actitivity que este fragment tiene su propio menu y llama a todos
@@ -140,18 +141,27 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
 
     public void showProduct() {
         mAdapter.updateListProduct();
+
     }
 
     private  void hideList(boolean hide){
         mList.setVisibility(hide ? View.VISIBLE : View.GONE);
         mEmpty.setVisibility(hide ? View.VISIBLE : View.GONE);
+
     }
 
     public void showEmptyState(boolean show){
         hideList(show);
+
+
+    }
+
+    public ProgressDialog getDialog() {
+        return dialog;
     }
 
     public void showMessage(String message, final Product product){
+
         Snackbar.make(getView(), "Producto Eliminado", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", new View.OnClickListener() {
                     @Override //Aqui eliminamos si o si, si clicka en undo, volvemos a añadir.
@@ -159,6 +169,16 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
                         mCallback.undoDeleting(product);
                     }
                 }).show();
+    }
+
+    @Override
+    public void showProgressDialog() {
+        dialog.show();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        dialog.dismiss();
     }
 
     @Override
