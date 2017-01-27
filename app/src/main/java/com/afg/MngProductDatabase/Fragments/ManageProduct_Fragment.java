@@ -1,23 +1,8 @@
 package com.afg.MngProductDatabase.Fragments;
 
-/*
- * Copyright (c) 2016 José Luis del Pino Gallardo.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- *  jose.gallardo994@gmail.com
- */
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
+import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.Presenter.CategoryPresenter;
 import com.afg.MngProductDatabase.R;
@@ -123,7 +109,7 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
     @Override
     public void onStart() {
         super.onStart();
-        presenter.getAllCategoies(adapter);
+        presenter.getAllCategoies();
 
     }
 
@@ -135,6 +121,10 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
 
     private void save(){
 
+        Cursor cursor = ((SimpleCursorAdapter)mCategory.getAdapter()).getCursor();
+        cursor.moveToPosition(mCategory.getSelectedItemPosition());
+        int i = cursor.getInt(0);
+
         mCallBack.saveProduct(p, new Product(
 
                 mName.getEditText().getText().toString(),
@@ -143,8 +133,24 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
                 mDosage.getEditText().getText().toString(),
                 Double.valueOf(mPrice.getEditText().getText().toString()),
                 mStock.getEditText().getText().toString(),
-                mUrl.getEditText().getText().toString(),
-                1));
+                mUrl.getEditText().getText().toString(),i
+                ));
+    }
+
+    @Override
+    public void setCursorCategory(Cursor cursor) {
+
+      //  adapter.swapCursor(cursor);
+        //Cierra el anterior cursor y abre el nuevo.
+        adapter.changeCursor(cursor);
+
+    }
+
+    @Override
+    public void onDetach() {
+        adapter = null;
+        super.onDetach();
+
     }
 
     public interface IManageListener{

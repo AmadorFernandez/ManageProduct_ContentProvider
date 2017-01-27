@@ -1,4 +1,4 @@
-package com.afg.MngProductDatabase.interfaces;
+package com.afg.MngProductDatabase.cursor;
 
 /*
  * Copyright (c) 2017 José Luis del Pino Gallardo.
@@ -18,22 +18,24 @@ package com.afg.MngProductDatabase.interfaces;
  */
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
-import android.widget.CursorAdapter;
+
+import com.afg.MngProductDatabase.database.DataBaseManager;
 
 /**
- * Created by usuario on 26/01/17.
+ * Created by usuario on 27/01/17.
  */
 
-public interface ICategoryPresenter {
-
-    interface View{
+public class CategoryCursorLoader extends CursorLoader {
 
 
-        Context getContext();
-
-        void setCursorCategory(Cursor cursor);
+    public CategoryCursorLoader(Context context) {
+        super(context);
     }
 
-    void getAllCategoies();
+    @Override
+    public Cursor loadInBackground() {
+        return DataBaseManager.getInstance().loadCategories();
+    }
 }
