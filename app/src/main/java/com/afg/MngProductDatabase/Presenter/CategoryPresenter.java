@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.widget.CursorAdapter;
 import android.widget.SpinnerAdapter;
 
+import com.afg.MngProductDatabase.database.DataBaseHelper;
 import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.afg.MngProductDatabase.interfaces.ICategoryPresenter;
 
@@ -41,7 +42,8 @@ public class CategoryPresenter implements ICategoryPresenter {
     public void getAllCategoies(CursorAdapter adapter) {
 
         Cursor cursor = DataBaseManager.getInstance().loadCategories();
-  //      adapter.swapCursor(cursor);
+        adapter.swapCursor(cursor);
+        DataBaseHelper.getInstance().closeDataBase();
 
     }
 }

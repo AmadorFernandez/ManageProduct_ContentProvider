@@ -92,9 +92,9 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
         String[] from = {ManageProductContract.CategoryEntry.COLUMN_NAME};
         int[] to = {android.R.id.text1};
 
-        adapter = new SimpleCursorAdapter(getContext(),android.R.layout.simple_spinner_item,
+        adapter = new SimpleCursorAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item,
                 null, from, to, 0);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCategory.setAdapter(adapter);
 
 

@@ -35,6 +35,7 @@ import com.afg.MngProductDatabase.database.DataBaseManager;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
     private boolean ASC = true;
     private ProductPresenter presenter;
     private ProductPresenter.View view;
+    private ArrayList<Product> localList;
 
     public ProductAdapter(final Context context, final ProductPresenter.View view) {
 
@@ -57,6 +59,7 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
         super(context, R.layout.item_product);
         this.context = context;
         this.view = view;
+        this.localList = new ArrayList<Product>();
 
         new AsyncTask<Void, Void, List<Product>>() {
             @Override
@@ -81,6 +84,7 @@ public class ProductAdapter extends ArrayAdapter<Product> implements Serializabl
                 super.onPostExecute(products);
                 view.dismissProgressDialog();
                 addAll(products);
+                localList.addAll(new ArrayList<Product>(products));
                 refreshView();
             }
         }.execute();

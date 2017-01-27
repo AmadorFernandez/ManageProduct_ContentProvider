@@ -135,7 +135,6 @@ public class DataBaseManager {
         Cursor cursor =  database.query(ManageProductContract.CategoryEntry.TABLE_NAME
                 ,ManageProductContract.CategoryEntry.ALL_COLUMS,
                 null,null,null,null,null);
-        DataBaseHelper.getInstance().closeDataBase();
         return cursor;
 
     }
