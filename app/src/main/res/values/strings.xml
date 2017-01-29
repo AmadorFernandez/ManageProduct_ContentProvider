@@ -24,4 +24,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_pre_add">Guardando farmacia</string>
+    <string name="action_cancelled">Accion cancelada</string>
+    <string name="action_pre_update">Actualizando...</string>
+    <string name="action_deleting">Borrarndo...</string>
+    <string name="text_name">Nombre</string>
+    <string name="text_email" >Email</string>
+    <string name="text_cif">Cif</string>
+    <string name="text_phone">Telefono</string>
+    <string name="text_address">Dirección</string>
 </resources>

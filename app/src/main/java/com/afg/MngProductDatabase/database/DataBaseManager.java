@@ -6,9 +6,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 
 import com.afg.MngProductDatabase.Model.Category;
+import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Model.Product;
+import com.afg.MngProductDatabase.R;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacy;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacyAdd;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacyDelete;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacyLoadAll;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacyUpdate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -138,5 +147,130 @@ public class DataBaseManager {
       //  DataBaseHelper.getInstance().closeDataBase();
         return cursor;
 
+    }
+
+    public void addPharmacy(final Pharmacy pharmacy, final IActionPharmacyAdd callBcak){
+
+        final ContentValues params = new ContentValues();
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_NAME, pharmacy.getName());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_ADDRESS, pharmacy.getAddress());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_CIF, pharmacy.getCif());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_MAIL, pharmacy.getEmail());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_PHONE, pharmacy.getPhone());
+
+        new AsyncTask<Void, Void, Long>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                callBcak.onPreAction(R.string.action_pre_add);
+            }
+
+            @Override
+            protected Long doInBackground(Void... voids) {
+
+                return database.insert(ManageProductContract.PharmacyEntry.TABLE_NAME,null, params);
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                super.onPostExecute(aLong);
+                pharmacy.setId(aLong.longValue());
+                DataBaseHelper.getInstance().closeDataBase();
+                callBcak.onAddPharmacy(pharmacy);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                callBcak.onFailAction(R.string.action_cancelled);
+                DataBaseHelper.getInstance().closeDataBase();
+            }
+        }.execute();
+
+    }
+
+    public void updatePharmacy(final Pharmacy pharmacy, final IActionPharmacyUpdate callBack){
+
+        final ContentValues params = new ContentValues();
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_NAME, pharmacy.getName());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_ADDRESS, pharmacy.getAddress());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_CIF, pharmacy.getCif());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_MAIL, pharmacy.getEmail());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_PHONE, pharmacy.getPhone());
+        final String[] whereParams = {String.valueOf(pharmacy.getId())};
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                callBack.onPreAction(R.string.action_pre_update);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                database.update(ManageProductContract.ProductEntry.TABLE_NAME,params, "_id = ?", whereParams);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void avoid) {
+                super.onPostExecute(avoid);
+                DataBaseHelper.getInstance().closeDataBase();
+                callBack.onUpdatePharmacy(pharmacy);;
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                DataBaseHelper.getInstance().closeDataBase();
+                callBack.onFailAction(R.string.action_cancelled);
+            }
+        }.execute();
+
+    }
+
+    public void deletePharmacy(final Pharmacy pharmacy, final IActionPharmacyDelete callBack){
+
+        ContentValues params = new ContentValues();
+        final String[] whereParams = {String.valueOf(pharmacy.getId())};
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                callBack.onPreAction(R.string.action_deleting);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                database.delete(ManageProductContract.PharmacyEntry.TABLE_NAME, "_id = ?", whereParams);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                DataBaseHelper.getInstance().closeDataBase();
+                callBack.onDeletePharmacy(pharmacy);
+            }
+
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+                callBack.onFailAction(R.string.action_cancelled);
+            }
+        }.execute();
+    }
+
+    public void loadPharmacies(IActionPharmacyLoadAll callBack){
+
+        //Ya veremos...
     }
 }

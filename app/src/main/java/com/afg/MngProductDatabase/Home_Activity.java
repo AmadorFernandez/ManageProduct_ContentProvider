@@ -17,7 +17,6 @@ package com.afg.MngProductDatabase;
  *  jose.gallardo994@gmail.com
  */
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -34,7 +33,7 @@ import android.widget.FrameLayout;
 import com.afg.MngProductDatabase.Fragments.Home_Fragment;
 import com.afg.MngProductDatabase.Fragments.ListProduct_Fragment;
 import com.afg.MngProductDatabase.Fragments.ManageProduct_Fragment;
-import com.afg.MngProductDatabase.Fragments.Pharmacy_Fragment;
+import com.afg.MngProductDatabase.Fragments.ListPharmacy_Fragment;
 import com.afg.MngProductDatabase.Fragments.Sales_Fragment;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.Presenter.ProductPresenter;
@@ -46,7 +45,7 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
     private ListProduct_Fragment mListProduct;
     private ManageProduct_Fragment mManageProduct;
     private Home_Fragment mHome;
-    private Pharmacy_Fragment mPharmacy;
+    private ListPharmacy_Fragment mPharmacy;
     private Sales_Fragment mSales;
     private boolean salir = false;
     private FrameLayout fl_home;
@@ -62,7 +61,7 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         fl_home = (FrameLayout)findViewById(R.id.fl_frameHome);
         mListProduct = ListProduct_Fragment.getInstance(null);
         mHome = new Home_Fragment();
-        mPharmacy = new Pharmacy_Fragment();
+        mPharmacy = new ListPharmacy_Fragment();
         mSales = new Sales_Fragment();
         mPresenter = new ProductPresenter(mListProduct);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
