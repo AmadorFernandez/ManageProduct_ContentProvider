@@ -19,10 +19,12 @@ package com.afg.MngProductDatabase.Fragments;
  */
 
 import android.app.ProgressDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -32,12 +34,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.afg.MngProductDatabase.Model.Pharmacy;
+import com.afg.MngProductDatabase.Presenter.PharmacyPresenter;
 import com.afg.MngProductDatabase.R;
+import com.afg.MngProductDatabase.interfaces.IViewPharmacy;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListPharmacy_Fragment extends Fragment {
+public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
 
 
     private ProgressDialog dialog;
@@ -45,13 +49,19 @@ public class ListPharmacy_Fragment extends Fragment {
     private FloatingActionButton fabAddPharmacy;
     public static final String RECOVERY_PHARMACY = "pharmacy";
     private CoordinatorLayout parent;
+    private PharmacyPresenter presenter;
+
 
     public ListPharmacy_Fragment() {
 
 
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.getAllPharmacies();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +70,7 @@ public class ListPharmacy_Fragment extends Fragment {
         list = (ListView)rootView.findViewById(R.id.listPharmacy);
         parent = (CoordinatorLayout)rootView.findViewById(R.id.listPharmacyFragment);
         fabAddPharmacy = (FloatingActionButton)rootView.findViewById(R.id.fabAddPharmacy);
-
+        presenter = new PharmacyPresenter(this);
         registerForContextMenu(list);
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -107,5 +117,37 @@ public class ListPharmacy_Fragment extends Fragment {
 
         super.onCreateContextMenu(menu, v, menuInfo);
 
+    }
+
+    @Override
+    public void startProgress(int codeMsg) {
+
+        dialog.setMessage(getString(codeMsg));
+        dialog.show();
+    }
+
+    @Override
+    public void actionOK(int codeMsg) {
+
+        dialog.dismiss();
+        showMsg(codeMsg);
+    }
+
+    @Override
+    public void failAction(int codeMsg) {
+
+        dialog.dismiss();
+        showMsg(codeMsg);
+    }
+
+    @Override
+    public void setCursorPharmacy(Cursor cursor) {
+
+        dialog.dismiss();
+    }
+
+    private void showMsg(int codeMsg){
+
+        Snackbar.make(parent, getString(codeMsg), Snackbar.LENGTH_LONG).show();
     }
 }

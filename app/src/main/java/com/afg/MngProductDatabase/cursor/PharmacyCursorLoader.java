@@ -1,4 +1,4 @@
-package com.afg.MngProductDatabase.Adapter;
+package com.afg.MngProductDatabase.cursor;
 
 /*
  * Copyright (c) 2017 José Luis del Pino Gallardo.
@@ -18,18 +18,27 @@ package com.afg.MngProductDatabase.Adapter;
  */
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.SimpleCursorAdapter;
+
+import com.afg.MngProductDatabase.database.DataBaseManager;
+import com.afg.MngProductDatabase.interfaces.IActionPharmacyLoadAll;
 
 /**
- * Created by usuario on 26/01/17.
+ * Created by usuario on 30/01/17.
  */
 
-public class SpinnerAdapter {
+public class PharmacyCursorLoader extends CursorLoader {
 
 
 
+    public PharmacyCursorLoader(Context context) {
+        super(context);
+    }
+
+    @Override
+    public Cursor loadInBackground() {
+
+        return DataBaseManager.getInstance().loadPharmacies();
+    }
 }

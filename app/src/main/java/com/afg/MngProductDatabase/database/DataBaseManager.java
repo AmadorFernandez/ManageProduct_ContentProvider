@@ -6,7 +6,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.Pharmacy;
@@ -30,7 +32,6 @@ public class DataBaseManager {
 
 
     private static DataBaseManager instance;
-
 
     public static DataBaseManager getInstance(){
 
@@ -120,6 +121,26 @@ public class DataBaseManager {
 
             }while (cursor.moveToNext());
         }
+
+        cursor.close();
+
+        //Mostrar en el logo la peazo union de la tabla producto y categoría.
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(ManageProductContract.ProductEntry.PRODUCT_JOIN_CATEGORY);
+        cursor = queryBuilder.query(database, ManageProductContract.ProductEntry.COLUMNS_PRODUCT_JOIN_CATEGORY, null,
+                null,null,null,null);
+
+        if(cursor.moveToFirst()){
+
+            do{
+
+                Log.e("TAG", cursor.getString(0) +", "+ cursor.getString(1) + " 8===D "+cursor.getString(2));
+
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
 
 
         DataBaseHelper.getInstance().closeDataBase();
@@ -269,8 +290,13 @@ public class DataBaseManager {
         }.execute();
     }
 
-    public void loadPharmacies(IActionPharmacyLoadAll callBack){
+    public Cursor loadPharmacies(){
 
-        //Ya veremos...
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        Cursor cursor =  database.query(ManageProductContract.PharmacyEntry.TABLE_NAME
+                ,ManageProductContract.ProductEntry.ALL_COLUMNS,
+                null,null,null,null,null);
+        //  DataBaseHelper.getInstance().closeDataBase();
+        return cursor;
     }
 }

@@ -33,4 +33,7 @@
     <string name="text_cif">Cif</string>
     <string name="text_phone">Telefono</string>
     <string name="text_address">Dirección</string>
+    <string name="action_pharmacy_add">Farmacia guardada</string>
+    <string name="action_update_pharmacy_ok">Farmacia actualizada</string>
+    <string name="action_delete_pharmacy_ok">Farmacia borrada</string>
 </resources>

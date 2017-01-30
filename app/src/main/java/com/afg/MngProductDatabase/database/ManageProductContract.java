@@ -3,6 +3,7 @@ package com.afg.MngProductDatabase.database;
 
 import android.provider.BaseColumns;
 
+import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.InvoiceLine;
 
 /**
@@ -37,6 +38,15 @@ public class ManageProductContract  {
         public static final String COLUMN_STOCK = "pr_stock";
         public static final String COLUMN_IMAGE = "pr_image";
         public static final String COLUMN_CATEGORY = "pr_category";
+        public static final String PRODUCT_JOIN_CATEGORY = String.format("%s p INNER JOIN %s c ON p.%s = c.%s", TABLE_NAME,
+                CategoryEntry.TABLE_NAME, BaseColumns._ID, CategoryEntry._ID);
+        public static final String[] COLUMNS_PRODUCT_JOIN_CATEGORY = new String[] {
+
+                COLUMN_NAME,
+                COLUMN_DESCRIPTION,
+                CategoryEntry.COLUMN_NAME
+
+        };
         public static final String[] ALL_COLUMNS = {ManageProductContract.ProductEntry._ID, ManageProductContract.ProductEntry.COLUMN_NAME,
                 ManageProductContract.ProductEntry.COLUMN_BRAND,ManageProductContract.ProductEntry.COLUMN_CATEGORY,
                 ManageProductContract.ProductEntry.COLUMN_DESCRIPTION, ManageProductContract.ProductEntry.COLUMN_DOSAGE,
@@ -80,6 +90,8 @@ public class ManageProductContract  {
         public static final String COLUMN_ADDRESS = "ph_address";
         public static final String COLUMN_PHONE = "ph_phone";
         public static final String COLUMN_MAIL = "pr_mail";
+        public static final String[] ALL_COLUMNS = {COLUMN_NAME, COLUMN_CIF, COLUMN_ADDRESS, COLUMN_PHONE,
+        COLUMN_MAIL};
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +
                 "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "%s TEXT NOT NULL,"+
