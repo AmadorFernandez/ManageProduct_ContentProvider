@@ -18,7 +18,10 @@ package com.afg.MngProductDatabase.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +31,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,9 +54,20 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
     private ListView list;
     private FloatingActionButton fabAddPharmacy;
     public static final String RECOVERY_PHARMACY = "pharmacy";
+    public static final String RECOVERY_MODE = "mode";
+    public static final int MODE_NEW = 1;
+    public static final int MODE_UPDATE = 2;
     private CoordinatorLayout parent;
     private PharmacyPresenter presenter;
     private ListPharmacyAdapter adapter;
+    private IListPharmacyFragment callBack;
+
+    public interface IListPharmacyFragment{
+
+        void showManagePharmacy(Pharmacy pharmacy, int mode);
+
+        void onCreatePharmacy(Pharmacy pharmacy);
+    }
 
 
     public ListPharmacy_Fragment() {
@@ -74,67 +89,98 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
         parent = (CoordinatorLayout)rootView.findViewById(R.id.listPharmacyFragment);
         fabAddPharmacy = (FloatingActionButton)rootView.findViewById(R.id.fabAddPharmacy);
         presenter = new PharmacyPresenter(this);
+        dialog = new ProgressDialog(getContext());
         registerForContextMenu(list);
         adapter = new ListPharmacyAdapter(getContext(), R.layout.item_list_pharmacy);
         list.setAdapter(adapter);
 
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                //Se coje el item de la posicion del adapter y se le pasa al fragment
-
-
-                //Se recoge la farmacia modificada y se le pasa al presentador
-
-
-                return false;
+                callBack.showManagePharmacy((Pharmacy) adapter.getItem(i), MODE_UPDATE);
             }
+
+
         });
 
         fabAddPharmacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final ManagePharmacy_Fragment fragment = ManagePharmacy_Fragment.newInstance(new Pharmacy());
-                fragment.setOnActionFinishedListener(new ManagePharmacy_Fragment.IReturnAction() {
-                    @Override
-                    public void onActionFinished(Pharmacy pharmacy) {
-
-                        //Se le pasa al presentador la farmacia para que la añada a la lista
-                        fabAddPharmacy.setVisibility(View.VISIBLE);
-                        getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-
-                    }
-                });
-
-                fabAddPharmacy.setVisibility(View.GONE);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(parent.getId(),
-                        fragment).addToBackStack(null).commit();
+                callBack.showManagePharmacy(new Pharmacy(), MODE_NEW);
             }
         });
 
         return rootView;
     }
 
+    public void addPharmacy(Pharmacy pharmacy){
+
+        presenter.addPharmacy(pharmacy);
+    }
+
+    public void updatePharmacy(Pharmacy pharmacy){
+
+        presenter.updatePharmacy(pharmacy);
+    }
+
+    public void deletePharmacy(Pharmacy pharmacy){
+
+        presenter.deletePharmacy(pharmacy);
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
+        getActivity().getMenuInflater().inflate(R.menu.delete_menu, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(final MenuItem item) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+
+        alertDialog.setTitle("Aviso");
+        alertDialog.setMessage("¿Esta seguro que desea borrar esta farmacia?");
+
+        alertDialog.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                presenter.deletePharmacy((Pharmacy) adapter.getItem(((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position));
+
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                }
+        ).show();
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        callBack = (IListPharmacyFragment)activity;
     }
 
     @Override
     public void startProgress(int codeMsg) {
 
         dialog.setMessage(getString(codeMsg));
-        dialog.show();
+    //    dialog.show();
     }
 
     @Override
     public void actionOK(int codeMsg) {
 
         dialog.dismiss();
+        adapter.notifyDataSetChanged();
         showMsg(codeMsg);
     }
 
@@ -148,8 +194,9 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
     @Override
     public void setCursorPharmacy(Cursor cursor) {
 
-        adapter.swapCursor(cursor);
-     //   dialog.dismiss();
+        adapter.changeCursor(cursor);
+        adapter.notifyDataSetChanged();
+        dialog.dismiss();
     }
 
     private void showMsg(int codeMsg){

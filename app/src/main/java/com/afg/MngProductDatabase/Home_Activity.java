@@ -32,14 +32,17 @@ import android.widget.FrameLayout;
 
 import com.afg.MngProductDatabase.Fragments.Home_Fragment;
 import com.afg.MngProductDatabase.Fragments.ListProduct_Fragment;
+import com.afg.MngProductDatabase.Fragments.ManagePharmacy_Fragment;
 import com.afg.MngProductDatabase.Fragments.ManageProduct_Fragment;
 import com.afg.MngProductDatabase.Fragments.ListPharmacy_Fragment;
 import com.afg.MngProductDatabase.Fragments.Sales_Fragment;
+import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.Presenter.ProductPresenter;
 import com.afg.MngProductDatabase.utils.DialogoConfirmacion;
 
-public class Home_Activity extends AppCompatActivity implements ListProduct_Fragment.IListProductListener, ManageProduct_Fragment.IManageListener {
+public class Home_Activity extends AppCompatActivity implements ListProduct_Fragment.IListProductListener,
+        ManageProduct_Fragment.IManageListener, ListPharmacy_Fragment.IListPharmacyFragment {
 
     private ProductPresenter mPresenter;
     private ListProduct_Fragment mListProduct;
@@ -195,5 +198,39 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    public void showManagePharmacy(Pharmacy pharmacy, int mode) {
+
+        final ManagePharmacy_Fragment fragment = ManagePharmacy_Fragment.newInstance(pharmacy, mode);
+
+        fragment.setOnActionFinishedListener(new ManagePharmacy_Fragment.IReturnAction() {
+            @Override
+            public void onAddActionFinished(Pharmacy pharmacy) {
+
+            //    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                mPharmacy.addPharmacy(pharmacy);
+                getSupportFragmentManager().popBackStack();
+            }
+
+            @Override
+            public void onUpdateActionFinished(Pharmacy pharmacy) {
+
+             //   getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                mPharmacy.updatePharmacy(pharmacy);
+                getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_frameHome, fragment, "manage_pharmacy").addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onCreatePharmacy(Pharmacy pharmacy) {
+
+
     }
 }

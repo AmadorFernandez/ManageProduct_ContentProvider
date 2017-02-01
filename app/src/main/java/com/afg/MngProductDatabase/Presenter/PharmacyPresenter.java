@@ -40,6 +40,7 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
 
 
     private IViewPharmacy viewPharmacy;
+    private final static int PHARMACY=1;
 
 
     public PharmacyPresenter(IViewPharmacy viewPharmacy){
@@ -47,13 +48,14 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
         this.viewPharmacy = viewPharmacy;
     }
 
-    private void addPharmacy(Pharmacy pharmacy){
+    public void addPharmacy(Pharmacy pharmacy){
 
         DataBaseManager.getInstance().addPharmacy(pharmacy, new IActionPharmacyAdd() {
             @Override
             public void onAddPharmacy(Pharmacy pharmacy) {
 
                 viewPharmacy.actionOK(R.string.action_pharmacy_add);
+                reloadPharmacies();
             }
 
             @Override
@@ -70,13 +72,14 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
         });
     }
 
-    private void updatePharmacy(Pharmacy pharmacy){
+    public void updatePharmacy(Pharmacy pharmacy){
 
         DataBaseManager.getInstance().updatePharmacy(pharmacy, new IActionPharmacyUpdate() {
             @Override
             public void onUpdatePharmacy(Pharmacy pharmacy) {
 
                 viewPharmacy.actionOK(R.string.action_update_pharmacy_ok);
+                reloadPharmacies();
             }
 
             @Override
@@ -93,13 +96,14 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
         });
     }
 
-    private void deletePharmacy(Pharmacy pharmacy){
+    public void deletePharmacy(Pharmacy pharmacy){
 
         DataBaseManager.getInstance().deletePharmacy(pharmacy, new IActionPharmacyDelete() {
             @Override
             public void onDeletePharmacy(Pharmacy pharmacy) {
 
                 viewPharmacy.actionOK(R.string.action_delete_pharmacy_ok);
+                reloadPharmacies();
             }
 
             @Override
@@ -118,7 +122,12 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
 
     public void getAllPharmacies(){
 
-        ((Activity)viewPharmacy.getContext()).getLoaderManager().initLoader(1, null, this);
+        ((Activity)viewPharmacy.getContext()).getLoaderManager().initLoader(PHARMACY, null, this);
+    }
+
+    public void reloadPharmacies(){
+
+        ((Activity)viewPharmacy.getContext()).getLoaderManager().restartLoader(PHARMACY, null, this);
     }
 
     @Override

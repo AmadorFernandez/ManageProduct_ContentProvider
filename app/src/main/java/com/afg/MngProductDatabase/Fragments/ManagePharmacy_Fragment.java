@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.R;
@@ -40,10 +39,13 @@ public class ManagePharmacy_Fragment extends Fragment {
     private Button btnOk;
     private IReturnAction listener;
     private Pharmacy pharmacy;
+    private int mode;
 
-    interface IReturnAction{
+  public   interface IReturnAction{
 
-        void onActionFinished(Pharmacy pharmacy);
+        void onAddActionFinished(Pharmacy pharmacy);
+
+        void onUpdateActionFinished(Pharmacy pharmacy);
     }
 
     public void setOnActionFinishedListener(IReturnAction listener){
@@ -51,9 +53,10 @@ public class ManagePharmacy_Fragment extends Fragment {
         this.listener = listener;
     }
 
-    public static ManagePharmacy_Fragment newInstance(Pharmacy pharmacy) {
+    public static ManagePharmacy_Fragment newInstance(Pharmacy pharmacy, int mode) {
 
         Bundle args = new Bundle();
+        args.putInt(ListPharmacy_Fragment.RECOVERY_MODE, mode);
         args.putParcelable(ListPharmacy_Fragment.RECOVERY_PHARMACY, pharmacy);
         ManagePharmacy_Fragment fragment = new ManagePharmacy_Fragment();
         fragment.setArguments(args);
@@ -66,6 +69,7 @@ public class ManagePharmacy_Fragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_manage_pharmacy, container, false);
         pharmacy = getArguments().getParcelable(ListPharmacy_Fragment.RECOVERY_PHARMACY);
+        mode = getArguments().getInt(ListPharmacy_Fragment.RECOVERY_MODE);
         edtAddress = (EditText)rootView.findViewById(R.id.edtAddressPharmacy);
         edtEmail = (EditText)rootView.findViewById(R.id.edtEmailPharmacy);
         edtName = (EditText)rootView.findViewById(R.id.edtNamePharmacy);
@@ -89,7 +93,15 @@ public class ManagePharmacy_Fragment extends Fragment {
                 pharmacy.setAddress(edtAddress.getText().toString());
                 pharmacy.setCif(edtCif.getText().toString());
                 pharmacy.setPhone(edtPhone.getText().toString());
-                listener.onActionFinished(pharmacy);
+
+                if(mode == ListPharmacy_Fragment.MODE_NEW) {
+
+                    listener.onAddActionFinished(pharmacy);
+
+                }else {
+
+                    listener.onUpdateActionFinished(pharmacy);
+                }
             }
         });
 

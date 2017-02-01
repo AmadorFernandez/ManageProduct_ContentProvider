@@ -217,8 +217,8 @@ public class DataBaseManager {
         final ContentValues params = new ContentValues();
         final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         params.put(ManageProductContract.PharmacyEntry.COLUMN_NAME, pharmacy.getName());
-        params.put(ManageProductContract.PharmacyEntry.COLUMN_ADDRESS, pharmacy.getAddress());
         params.put(ManageProductContract.PharmacyEntry.COLUMN_CIF, pharmacy.getCif());
+        params.put(ManageProductContract.PharmacyEntry.COLUMN_ADDRESS, pharmacy.getAddress());
         params.put(ManageProductContract.PharmacyEntry.COLUMN_MAIL, pharmacy.getEmail());
         params.put(ManageProductContract.PharmacyEntry.COLUMN_PHONE, pharmacy.getPhone());
         final String[] whereParams = {String.valueOf(pharmacy.getId())};
@@ -234,7 +234,7 @@ public class DataBaseManager {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                database.update(ManageProductContract.ProductEntry.TABLE_NAME,params, "_id = ?", whereParams);
+                database.update(ManageProductContract.PharmacyEntry.TABLE_NAME,params, "_id = ?", whereParams);
                 return null;
             }
 
