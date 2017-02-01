@@ -90,7 +90,7 @@ public class ManageProductContract  {
         public static final String COLUMN_ADDRESS = "ph_address";
         public static final String COLUMN_PHONE = "ph_phone";
         public static final String COLUMN_MAIL = "pr_mail";
-        public static final String[] ALL_COLUMNS = {COLUMN_NAME, COLUMN_CIF, COLUMN_ADDRESS, COLUMN_PHONE,
+        public static final String[] ALL_COLUMNS = {_ID, COLUMN_NAME, COLUMN_CIF, COLUMN_ADDRESS, COLUMN_PHONE,
         COLUMN_MAIL};
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +
                 "%s INTEGER PRIMARY KEY AUTOINCREMENT," +

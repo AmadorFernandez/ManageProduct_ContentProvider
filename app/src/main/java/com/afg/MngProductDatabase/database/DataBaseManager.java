@@ -294,7 +294,7 @@ public class DataBaseManager {
 
         SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
         Cursor cursor =  database.query(ManageProductContract.PharmacyEntry.TABLE_NAME
-                ,ManageProductContract.ProductEntry.ALL_COLUMNS,
+                ,ManageProductContract.PharmacyEntry.ALL_COLUMNS,
                 null,null,null,null,null);
         //  DataBaseHelper.getInstance().closeDataBase();
         return cursor;

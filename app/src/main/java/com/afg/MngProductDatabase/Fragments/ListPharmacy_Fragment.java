@@ -33,9 +33,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.afg.MngProductDatabase.Adapter.ListPharmacyAdapter;
 import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Presenter.PharmacyPresenter;
 import com.afg.MngProductDatabase.R;
+import com.afg.MngProductDatabase.database.ManageProductContract;
 import com.afg.MngProductDatabase.interfaces.IViewPharmacy;
 
 /**
@@ -50,6 +52,7 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
     public static final String RECOVERY_PHARMACY = "pharmacy";
     private CoordinatorLayout parent;
     private PharmacyPresenter presenter;
+    private ListPharmacyAdapter adapter;
 
 
     public ListPharmacy_Fragment() {
@@ -72,6 +75,8 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
         fabAddPharmacy = (FloatingActionButton)rootView.findViewById(R.id.fabAddPharmacy);
         presenter = new PharmacyPresenter(this);
         registerForContextMenu(list);
+        adapter = new ListPharmacyAdapter(getContext(), R.layout.item_list_pharmacy);
+        list.setAdapter(adapter);
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -143,7 +148,8 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
     @Override
     public void setCursorPharmacy(Cursor cursor) {
 
-        dialog.dismiss();
+        adapter.swapCursor(cursor);
+     //   dialog.dismiss();
     }
 
     private void showMsg(int codeMsg){
