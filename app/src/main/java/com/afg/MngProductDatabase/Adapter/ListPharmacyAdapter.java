@@ -75,7 +75,7 @@ public class ListPharmacyAdapter extends CursorAdapter {
 
     @Override
     public Object getItem(int position) {
-        
+
         getCursor().moveToPosition(position);
         Pharmacy pharmacy = new Pharmacy();
         pharmacy.setId(getCursor().getLong(0));

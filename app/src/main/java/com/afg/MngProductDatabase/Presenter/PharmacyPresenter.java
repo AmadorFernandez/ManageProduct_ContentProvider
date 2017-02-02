@@ -40,7 +40,7 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
 
 
     private IViewPharmacy viewPharmacy;
-    private final static int PHARMACY=1;
+    private final static int PHARMACY=2;
 
 
     public PharmacyPresenter(IViewPharmacy viewPharmacy){
