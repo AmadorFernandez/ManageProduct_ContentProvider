@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 public class Invoice {
+
     int id;
     int idPharmacy;
     String date;

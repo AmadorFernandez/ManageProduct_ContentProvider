@@ -5,7 +5,7 @@ package com.afg.MngProductDatabase.Model;
  */
 
 public class InvoiceLine {
-    
+
     int idInvoice;
     int orderProduct;
     int idProduct;

@@ -1,9 +1,7 @@
 package com.afg.MngProductDatabase.database;
 
 
-import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -14,14 +12,11 @@ import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.R;
-import com.afg.MngProductDatabase.interfaces.IActionPharmacy;
 import com.afg.MngProductDatabase.interfaces.IActionPharmacyAdd;
 import com.afg.MngProductDatabase.interfaces.IActionPharmacyDelete;
-import com.afg.MngProductDatabase.interfaces.IActionPharmacyLoadAll;
 import com.afg.MngProductDatabase.interfaces.IActionPharmacyUpdate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -299,4 +294,37 @@ public class DataBaseManager {
         //  DataBaseHelper.getInstance().closeDataBase();
         return cursor;
     }
+
+    public void addCategoty(Category category){
+
+        final ContentValues params = new ContentValues();
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.CategoryEntry.COLUMN_NAME, category.getName());
+        category.setId(database.insert(ManageProductContract.CategoryEntry.TABLE_NAME, null, params));
+        DataBaseHelper.getInstance().closeDataBase();
+
+
+    }
+
+    public void updateCategory(Category category){
+
+        final ContentValues params = new ContentValues();
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        final String[] whereParams = {String.valueOf(category.getId())};
+        params.put(ManageProductContract.CategoryEntry.COLUMN_NAME, category.getName());
+        database.update(ManageProductContract.CategoryEntry.TABLE_NAME, params, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+    }
+
+    public void deleteCategory(Category category){
+
+        final ContentValues params = new ContentValues();
+        final SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        final String[] whereParams = {String.valueOf(category.getId())};
+        database.delete(ManageProductContract.CategoryEntry.TABLE_NAME, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
+    }
+
+
 }

@@ -31,24 +31,28 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.afg.MngProductDatabase.Fragments.Home_Fragment;
+import com.afg.MngProductDatabase.Fragments.ListCategory_Fragment;
 import com.afg.MngProductDatabase.Fragments.ListProduct_Fragment;
+import com.afg.MngProductDatabase.Fragments.ManageCategory_Fragment;
 import com.afg.MngProductDatabase.Fragments.ManagePharmacy_Fragment;
 import com.afg.MngProductDatabase.Fragments.ManageProduct_Fragment;
 import com.afg.MngProductDatabase.Fragments.ListPharmacy_Fragment;
 import com.afg.MngProductDatabase.Fragments.Sales_Fragment;
+import com.afg.MngProductDatabase.Model.Category;
 import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.Presenter.ProductPresenter;
 import com.afg.MngProductDatabase.utils.DialogoConfirmacion;
 
 public class Home_Activity extends AppCompatActivity implements ListProduct_Fragment.IListProductListener,
-        ManageProduct_Fragment.IManageListener, ListPharmacy_Fragment.IListPharmacyFragment {
+        ManageProduct_Fragment.IManageListener, ListPharmacy_Fragment.IListPharmacyFragment, ListCategory_Fragment.IListCategoryFragment {
 
     private ProductPresenter mPresenter;
     private ListProduct_Fragment mListProduct;
     private ManageProduct_Fragment mManageProduct;
     private Home_Fragment mHome;
     private ListPharmacy_Fragment mPharmacy;
+    private ListCategory_Fragment mCategory;
     private Sales_Fragment mSales;
     private boolean salir = false;
     private FrameLayout fl_home;
@@ -65,6 +69,7 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         mListProduct = ListProduct_Fragment.getInstance(null);
         mHome = new Home_Fragment();
         mPharmacy = new ListPharmacy_Fragment();
+        mCategory = new ListCategory_Fragment();
         mSales = new Sales_Fragment();
         mPresenter = new ProductPresenter(mListProduct);
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -161,6 +166,11 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_frameHome, mSales, "Sales").commit();
     }
 
+    public void showListCategories(){
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_frameHome, mCategory, "Category").commit();
+    }
+
     public void showList() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_frameHome, mListProduct, "List").commit();
     }
@@ -184,6 +194,8 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
                     case R.id.action_sales:
                         showSales();
                         break;
+                    case R.id.category:
+                        showListCategories();
                     default:
                         item.setChecked(false);
                         break;
@@ -232,5 +244,32 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
     public void onCreatePharmacy(Pharmacy pharmacy) {
 
 
+    }
+
+    @Override
+    public void showManageCategory(Category category, final int mode) {
+
+        ManageCategory_Fragment fragment = ManageCategory_Fragment.newInstance(category, mode);
+
+        fragment.setOnActionOkListener(new ManageCategory_Fragment.IReturAction() {
+            @Override
+            public void onActionOK(Category category, int modeAction) {
+
+                if(modeAction == ListCategory_Fragment.MODE_NEW){
+
+                    mCategory.addCategory(category);
+                    getSupportFragmentManager().popBackStack();
+
+                }else {
+
+                    mCategory.updateCategory(category);
+                    getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_frameHome, fragment, "manage_category").addToBackStack(null)
+                .commit();
     }
 }

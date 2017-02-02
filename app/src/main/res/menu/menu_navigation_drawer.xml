@@ -34,6 +34,11 @@
             android:icon="@drawable/ic_local_hospital_black_24dp"/>
 
         <item
+            android:id="@+id/category"
+            android:title="Categoría"
+            android:icon="@drawable/ic_local_hospital_black_24dp"/>
+
+        <item
             android:id="@+id/action_sales"
             android:title="Ventas"
             android:icon="@drawable/ic_add_shopping_cart_black_24dp"/>

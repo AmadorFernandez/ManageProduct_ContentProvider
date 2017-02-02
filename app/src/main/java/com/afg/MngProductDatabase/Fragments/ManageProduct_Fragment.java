@@ -142,7 +142,9 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
 
       //  adapter.swapCursor(cursor);
         //Cierra el anterior cursor y abre el nuevo.
-        adapter.changeCursor(cursor);
+
+        if(cursor != null)
+            adapter.swapCursor(cursor);
 
     }
 
