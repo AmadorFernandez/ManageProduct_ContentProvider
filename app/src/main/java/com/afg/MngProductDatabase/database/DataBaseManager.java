@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.afg.MngProductDatabase.Model.Category;
+import com.afg.MngProductDatabase.Model.Invoice;
+import com.afg.MngProductDatabase.Model.InvoiceLine;
 import com.afg.MngProductDatabase.Model.Pharmacy;
 import com.afg.MngProductDatabase.Model.Product;
 import com.afg.MngProductDatabase.R;
@@ -119,8 +121,7 @@ public class DataBaseManager {
 
         cursor.close();
 
-        //Mostrar en el logo la peazo union de la tabla producto y categoría.
-
+        //Mostrar en el log la peazo union de la tabla producto y categoría.
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(ManageProductContract.ProductEntry.PRODUCT_JOIN_CATEGORY);
         cursor = queryBuilder.query(database, ManageProductContract.ProductEntry.COLUMNS_PRODUCT_JOIN_CATEGORY, null,
@@ -130,7 +131,7 @@ public class DataBaseManager {
 
             do{
 
-                Log.e("TAG", cursor.getString(0) +", "+ cursor.getString(1) + " 8===D "+cursor.getString(2));
+                Log.e("TAG", cursor.getString(0) +", "+ cursor.getString(1) + " 8===D "+cursor.getString(2) + "//// "+cursor.getInt(3));
 
             }while (cursor.moveToNext());
         }
@@ -326,5 +327,114 @@ public class DataBaseManager {
 
     }
 
+    public Cursor getAllInvoices(){
+
+        Cursor cursor = null;
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setTables(ManageProductContract.InvoiceEntry.IN_PHARMACY_JOIN_PHARMACY);
+        cursor = queryBuilder.query(database, ManageProductContract.InvoiceEntry.COLUMNS_JOIN_PHARMACY_STATUS, null,
+                null, null, null, null);
+        return cursor;
+    }
+
+    public Cursor getAllInvoiceLineByIdInvoice(int idInvoice){
+
+        Cursor cursor = null;
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        String[] whereParams = {String.valueOf(idInvoice)};
+
+
+
+        return cursor;
+    }
+
+    public void addInvoice(Invoice invoice){
+
+        ContentValues params = new ContentValues();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_DATE, invoice.getDate());
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_PHARMACY, invoice.getIdPharmacy());
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_STATUS, invoice.getStatus());
+        invoice.setId((int) database.insert(ManageProductContract.InvoiceEntry.TABLE_NAME, null, params));
+        DataBaseHelper.getInstance().closeDataBase();
+
+        for(InvoiceLine tmp: invoice.getLines()){
+
+            tmp.setIdInvoice(invoice.getId());
+            addInvoiceLine(tmp);
+        }
+
+
+    }
+
+    public void updateInvoice(Invoice invoice){
+
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        ContentValues params = new ContentValues();
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_DATE, invoice.getDate());
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_PHARMACY, invoice.getIdPharmacy());
+        params.put(ManageProductContract.InvoiceEntry.COLUMN_IN_STATUS, invoice.getStatus());
+        String[] whereParams = {String.valueOf(ManageProductContract.InvoiceEntry._ID)};
+        database.update(ManageProductContract.InvoiceEntry.TABLE_NAME, params, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+    }
+
+    public void updateInvoiceLine(InvoiceLine invoiceLine){
+
+        ContentValues params = new ContentValues();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_AMOUNT, invoiceLine.getAmount());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_INVOICE, invoiceLine.getIdInvoice());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_ORDER_PRODUCT, invoiceLine.getOrderProduct());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_PRICE, invoiceLine.getPrice());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_PRODUCT, invoiceLine.getIdProduct());
+        String[] whereParams = {String.valueOf(invoiceLine.getIdInvoice()), String.valueOf(invoiceLine.getIdInvoice())};
+        database.update(ManageProductContract.InvoiceLineEntry.TABLE_NAME, params,
+                ManageProductContract.InvoiceLineEntry.COLUMN_IL_INVOICE + "= ? AND"+
+        ManageProductContract.InvoiceLineEntry.COLUMN_IL_ORDER_PRODUCT + "= ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
+    }
+
+    public void addInvoiceLine(InvoiceLine invoiceLine){
+
+        ContentValues params = new ContentValues();
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_AMOUNT, invoiceLine.getAmount());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_INVOICE, invoiceLine.getIdInvoice());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_ORDER_PRODUCT, invoiceLine.getOrderProduct());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_PRICE, invoiceLine.getPrice());
+        params.put(ManageProductContract.InvoiceLineEntry.COLUMN_IL_PRODUCT, invoiceLine.getIdProduct());
+        database.insert(ManageProductContract.InvoiceLineEntry.TABLE_NAME, null, params);
+        DataBaseHelper.getInstance().closeDataBase();
+
+    }
+
+    public void deleteInvoice(Invoice invoice){
+
+        for(InvoiceLine tmp: invoice.getLines()){
+
+            deleteInvoiceLine(tmp);
+        }
+
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        String[] whereParams = {String.valueOf(ManageProductContract.InvoiceEntry._ID)};
+        database.delete(ManageProductContract.InvoiceEntry.TABLE_NAME, "_id = ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
+    }
+
+    public void deleteInvoiceLine(InvoiceLine invoiceLine){
+
+        SQLiteDatabase database = DataBaseHelper.getInstance().openDataBase();
+        ContentValues params = new ContentValues();
+        String[] whereParams = {String.valueOf(invoiceLine.getIdInvoice()), String.valueOf(invoiceLine.getIdInvoice())};
+        database.delete(ManageProductContract.InvoiceLineEntry.TABLE_NAME,
+                ManageProductContract.InvoiceLineEntry.COLUMN_IL_INVOICE + "= ? AND"+
+                        ManageProductContract.InvoiceLineEntry.COLUMN_IL_ORDER_PRODUCT + "= ?", whereParams);
+        DataBaseHelper.getInstance().closeDataBase();
+
+    }
 
 }

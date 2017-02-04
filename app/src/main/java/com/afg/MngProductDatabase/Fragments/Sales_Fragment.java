@@ -18,30 +18,58 @@ package com.afg.MngProductDatabase.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.afg.MngProductDatabase.Adapter.ListInvoiceAdapter;
+import com.afg.MngProductDatabase.Presenter.InvoicePresenter;
 import com.afg.MngProductDatabase.R;
+import com.afg.MngProductDatabase.interfaces.IInvoicePresenter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Sales_Fragment extends Fragment {
+public class Sales_Fragment extends Fragment implements IInvoicePresenter.View {
 
 
-    public Sales_Fragment() {
-        // Required empty public constructor
+    private ListView list;
+    private CoordinatorLayout parent;
+    private FloatingActionButton fab;
+    private InvoicePresenter presenter;
+    private ListInvoiceAdapter adapter;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_list_invoice, container, false);
+        presenter = new InvoicePresenter(this);
+        list = (ListView)rootView.findViewById(R.id.listInvoice);
+        fab = (FloatingActionButton)rootView.findViewById(R.id.fabAddinvoice);
+        adapter = new ListInvoiceAdapter(getContext());
+        list.setAdapter(adapter);
+        return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.getAllInvoices();
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sales, container, false);
+    public void setCursorCategory(Cursor cursor) {
+
+        adapter.swapCursor(cursor);
     }
 
 }

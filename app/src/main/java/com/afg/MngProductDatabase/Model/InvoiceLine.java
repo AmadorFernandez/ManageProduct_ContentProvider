@@ -7,6 +7,27 @@ package com.afg.MngProductDatabase.Model;
 public class InvoiceLine {
 
     int idInvoice;
+
+    public void setIdInvoice(int idInvoice) {
+        this.idInvoice = idInvoice;
+    }
+
+    public void setOrderProduct(int orderProduct) {
+        this.orderProduct = orderProduct;
+    }
+
+    public void setIdProduct(int idProduct) {
+        this.idProduct = idProduct;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     int orderProduct;
     int idProduct;
     int amount;

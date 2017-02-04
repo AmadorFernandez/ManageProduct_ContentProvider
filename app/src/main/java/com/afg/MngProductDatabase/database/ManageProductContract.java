@@ -38,12 +38,13 @@ public class ManageProductContract  {
         public static final String COLUMN_IMAGE = "pr_image";
         public static final String COLUMN_CATEGORY = "pr_category";
         public static final String PRODUCT_JOIN_CATEGORY = String.format("%s p INNER JOIN %s c ON p.%s = c.%s", TABLE_NAME,
-                CategoryEntry.TABLE_NAME, BaseColumns._ID, CategoryEntry._ID);
+                CategoryEntry.TABLE_NAME, COLUMN_CATEGORY, CategoryEntry._ID);
         public static final String[] COLUMNS_PRODUCT_JOIN_CATEGORY = new String[] {
 
                 COLUMN_NAME,
                 COLUMN_DESCRIPTION,
-                CategoryEntry.COLUMN_NAME
+                CategoryEntry.COLUMN_NAME,
+                "p."+_ID
 
         };
         public static final String[] ALL_COLUMNS = {ManageProductContract.ProductEntry._ID, ManageProductContract.ProductEntry.COLUMN_NAME,
@@ -122,7 +123,7 @@ public class ManageProductContract  {
                 _ID,
                 COLUMN_NAME
                 );
-
+        public static final String SQL_INSERT_ENTRIES = String.format("INSERT INTO %s VALUES (1, 'En curso'), (2, 'Cancelado')", TABLE_NAME);
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
 
@@ -134,8 +135,20 @@ public class ManageProductContract  {
         public static final String COLUMN_IN_PHARMACY = "in_pharmacy";
         public static final String COLUMN_IN_DATE = "in_date";
         public static final String COLUMN_IN_STATUS = "in_status";
+        public static final String IN_STATUS_JOIN_STATUS = String.format("INNER JOIN %s s ON i.%s = s.%s  ", StatusEntry.TABLE_NAME,
+                COLUMN_IN_STATUS, StatusEntry._ID);
+        public static final String IN_PHARMACY_JOIN_PHARMACY = String.format("%s i INNER JOIN %s p ON i.%s = p.%s %s", TABLE_NAME,
+                PharmacyEntry.TABLE_NAME, _ID, PharmacyEntry._ID, IN_STATUS_JOIN_STATUS);
         public static final String REFERENCE_ID_PHARMACY = String.format("REFERENCES %s (%s) ON UPDATE CASCADE ON" +
                 " DELETE RESTRICT",  PharmacyEntry.TABLE_NAME, PharmacyEntry._ID);
+        public static final String[] COLUMNS_JOIN_PHARMACY_STATUS = {
+
+                PharmacyEntry.COLUMN_NAME,
+                StatusEntry.COLUMN_NAME,
+                COLUMN_IN_DATE,
+                "i."+_ID
+
+        };
         public static final String REFERENCE_ID_STATUS = String.format("REFERENCES %s (%s) ON UPDATE CASCADE ON" +
                 " DELETE RESTRICT",  StatusEntry.TABLE_NAME, StatusEntry._ID);
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +
@@ -193,8 +206,6 @@ public class ManageProductContract  {
                 TABLE_NAME);
 
     }
-
-
 
 
 }

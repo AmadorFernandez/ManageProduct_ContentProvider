@@ -37,4 +37,28 @@ public class Invoice {
     public int getStatus() {
         return status;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setIdPharmacy(int idPharmacy) {
+        this.idPharmacy = idPharmacy;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<InvoiceLine> getLines() {
+        return lines;
+    }
+
+    public void setLines(List<InvoiceLine> lines) {
+        this.lines = lines;
+    }
 }
