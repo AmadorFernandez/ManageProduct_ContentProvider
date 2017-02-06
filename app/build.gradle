@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25"
     defaultConfig {
-        applicationId 'com.afg.MngProductDatabase'
+        applicationId 'com.afg.MngProductContentProvider'
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

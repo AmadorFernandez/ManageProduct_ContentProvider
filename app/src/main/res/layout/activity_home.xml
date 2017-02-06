@@ -39,7 +39,7 @@
     android:id="@+id/fl_frameHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.afg.MngProductDatabase.Home_Activity">
+    tools:context="com.afg.MngProductContentProvider.Home_Activity">
 
 </FrameLayout>
 </LinearLayout>
