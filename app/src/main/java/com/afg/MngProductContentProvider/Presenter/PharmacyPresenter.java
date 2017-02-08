@@ -19,17 +19,20 @@ package com.afg.MngProductContentProvider.Presenter;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Pharmacy;
 import com.afg.MngProductContentProvider.R;
-import com.afg.MngProductContentProvider.cursor.PharmacyCursorLoader;
+
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyAdd;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyDelete;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyUpdate;
 import com.afg.MngProductContentProvider.interfaces.IViewPharmacy;
+import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
 /**
  * Created by usuario on 30/01/17.
@@ -73,7 +76,8 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new PharmacyCursorLoader(viewPharmacy.getContext());
+        return new CursorLoader(viewPharmacy.getContext(), ManageProductContract.Pharmacy.CONTENT_URI,
+                ManageProductContract.Pharmacy.PROJECTIONS, null, null, DataBaseContract.PharmacyEntry.DEFAULT_SORT);
     }
 
     @Override

@@ -19,13 +19,14 @@ package com.afg.MngProductContentProvider.Presenter;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Category;
-import com.afg.MngProductContentProvider.cursor.CategoryCursorLoader;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
+
 
 /**
  * Created by usuario on 2/02/17.
@@ -71,7 +72,7 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CategoryCursorLoader(view.getContext());
+        return new CursorLoader(view.getContext());
     }
 
     @Override

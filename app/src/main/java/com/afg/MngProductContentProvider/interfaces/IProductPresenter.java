@@ -17,6 +17,9 @@ package com.afg.MngProductContentProvider.interfaces;
  *  jose.gallardo994@gmail.com
  */
 
+import android.content.Context;
+import android.database.Cursor;
+
 import com.afg.MngProductContentProvider.Model.Product;
 
 /**
@@ -37,5 +40,9 @@ public interface IProductPresenter {
         void showMessage(String message, Product product);
         void showProgressDialog();
         void dismissProgressDialog();
+
+        Context getContext();
+
+        void setCursorPharmacy(Cursor cursor);
     }
 }

@@ -19,10 +19,12 @@ package com.afg.MngProductContentProvider.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.os.Bundle;
+
 import android.support.v7.widget.PopupMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -53,6 +56,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     PopupMenu popup;
     private FloatingActionButton mFab;
     private ProgressDialog dialog;
+    private ProductPresenter presenter;
 
     private IListProductListener mCallback;
 
@@ -66,7 +70,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         dialog = new ProgressDialog(getContext());
-      //  mAdapter = new ProductAdapter(getContext(), this);
+        mAdapter = new ProductAdapter(getContext());
         setRetainInstance(true);
 
 
@@ -78,8 +82,15 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        presenter.loadProducts();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container,  args);
+        presenter = new ProductPresenter(this);
         View rootView = inflater.inflate(R.layout.fragment_list_product, container, false);
         mEmpty = (TextView)rootView.findViewById(android.R.id.empty);
         mFab = (FloatingActionButton)rootView.findViewById(R.id.fab_añadir);
@@ -179,6 +190,12 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     @Override
     public void dismissProgressDialog() {
         dialog.dismiss();
+    }
+
+    @Override
+    public void setCursorPharmacy(Cursor cursor) {
+
+        mAdapter.swapCursor(cursor);
     }
 
     @Override

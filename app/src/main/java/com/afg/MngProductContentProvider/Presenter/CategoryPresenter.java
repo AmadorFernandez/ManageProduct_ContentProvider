@@ -25,7 +25,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import com.afg.MngProductContentProvider.cursor.CategoryCursorLoader;
+
 import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
 import com.afg.MngProductContentProvider.provider.ManageProductContract;

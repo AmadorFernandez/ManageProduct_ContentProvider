@@ -17,10 +17,18 @@ package com.afg.MngProductContentProvider.Presenter;
  *  jose.gallardo994@gmail.com
  */
 
+import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Product;
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.IProductPresenter;
+import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
 import java.util.List;
 
@@ -28,9 +36,10 @@ import java.util.List;
  * Created by usuario on 9/12/16.
  */
 
-public class ProductPresenter implements IProductPresenter{
+public class ProductPresenter implements IProductPresenter, LoaderManager.LoaderCallbacks<Cursor>{
 
     View view;
+    private final static int PRODUCT=4;
 
     public ProductPresenter(IProductPresenter.View Vista){
         this.view = Vista;
@@ -50,7 +59,13 @@ public class ProductPresenter implements IProductPresenter{
 
     public void loadProducts(){
 
+        ((Activity)view.getContext()).getLoaderManager().initLoader(PRODUCT, null, this);
 
+    }
+
+    public void reloadPharmacies(){
+
+        ((Activity)view.getContext()).getLoaderManager().restartLoader(PRODUCT, null, this);
     }
 
     @Override
@@ -88,4 +103,21 @@ public class ProductPresenter implements IProductPresenter{
     }
 
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(view.getContext(), ManageProductContract.Product.CONTENT_URI,
+                ManageProductContract.Product.PROJECTIONS, null, null, DataBaseContract.ProductEntry.DEFAULT_SORT);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        view.setCursorPharmacy(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+        view.setCursorPharmacy(null);
+
+    }
 }

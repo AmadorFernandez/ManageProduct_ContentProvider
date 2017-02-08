@@ -39,7 +39,7 @@ public class DataBaseContract {
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
 
-        public static final String INSERT_ENTRIES = "INSERT INTO category (1, 'Xexuales')";
+        public static final String INSERT_ENTRIES = "INSERT INTO category VALUES (1, 'Xexuales')";
 
     }
 
@@ -54,6 +54,7 @@ public class DataBaseContract {
         public static final String COLUMN_STOCK = "pr_stock";
         public static final String COLUMN_IMAGE = "pr_image";
         public static final String CATEGORY_ID = "category_id";
+        public static final String DEFAULT_SORT = COLUMN_NAME;
         public static final String PRODUCT_JOIN_CATEGORY = String.format("%s p INNER JOIN %s c ON p.%s = c.%s", TABLE_NAME,
                 DataBaseContract.CategoryEntry.TABLE_NAME, CATEGORY_ID, DataBaseContract.CategoryEntry._ID);
         public static final String[] COLUMNS_PRODUCT_JOIN_CATEGORY = new String[] {
@@ -64,6 +65,9 @@ public class DataBaseContract {
                 "p."+_ID
 
         };
+
+        public static final String INSERT_ENTRIES = "INSERT INTO product VALUES (1, 'nombre', 'raegh'," +
+                "'dzfrh', 'dfhsre', 10, 25, 'aewytga', 1)";
         public static final String[] ALL_COLUMNS = {DataBaseContract.ProductEntry._ID, DataBaseContract.ProductEntry.COLUMN_NAME,
                 DataBaseContract.ProductEntry.COLUMN_BRAND, ProductEntry.CATEGORY_ID,
                 DataBaseContract.ProductEntry.COLUMN_DESCRIPTION, DataBaseContract.ProductEntry.COLUMN_DOSAGE,
@@ -106,7 +110,8 @@ public class DataBaseContract {
         public static final String COLUMN_CIF = "ph_cif";
         public static final String COLUMN_ADDRESS = "ph_address";
         public static final String COLUMN_PHONE = "ph_phone";
-        public static final String COLUMN_MAIL = "pr_mail";
+        public static final String COLUMN_MAIL = "ph_mail";
+        public static final String DEFAULT_SORT = COLUMN_NAME;
         public static final String[] ALL_COLUMNS = {_ID, COLUMN_NAME, COLUMN_CIF, COLUMN_ADDRESS, COLUMN_PHONE,
                 COLUMN_MAIL};
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (" +
@@ -124,6 +129,8 @@ public class DataBaseContract {
                 COLUMN_PHONE,
                 COLUMN_MAIL
         );
+        public static final String INSERT_ENTRIES = "INSERT INTO pharmacy VALUES (1, 'nombre', 'raegh'," +
+                "'dzfrh', 'dfhsre', 'resayg')";
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
 
@@ -184,6 +191,9 @@ public class DataBaseContract {
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
 
+        public static final String SQL_INSERT_ENTRIES = "INSERT INTO invoice VALUES (1, '2017-02-01', 1, 1)";
+
+        public static final String DEFAULT_SORT = COLUMN_IN_DATE;
     }
 
     public static class InvoiceLineEntry implements BaseColumns{

@@ -18,6 +18,7 @@ package com.afg.MngProductContentProvider.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -148,6 +149,11 @@ public class MultiSelectList_Fragment extends ListFragment implements IProduct, 
 
     @Override
     public void dismissProgressDialog() {
+
+    }
+
+    @Override
+    public void setCursorPharmacy(Cursor cursor) {
 
     }
 

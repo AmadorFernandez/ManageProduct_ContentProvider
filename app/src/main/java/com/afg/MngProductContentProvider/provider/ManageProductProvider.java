@@ -73,9 +73,6 @@ public class ManageProductProvider extends ContentProvider {
     public boolean onCreate() {
 
         database = DataBaseHelper.getInstance().openDataBase();
-
-
-
         return true;
     }
 
@@ -94,12 +91,47 @@ public class ManageProductProvider extends ContentProvider {
 
                     order = DataBaseContract.CategoryEntry.DEFAULT_SORT;
                 }
+                cursor = builder.query(database, proyection, selection, selectionArgs,null, null, order);
                 break;
             case CATEGORY_ID:
                 break;
             case PRODUCT:
+                builder.setTables(DataBaseContract.ProductEntry.TABLE_NAME);
+                if(!TextUtils.isEmpty(order)){
+
+                    order = DataBaseContract.ProductEntry.DEFAULT_SORT;
+                }
+                cursor = builder.query(database, proyection, selection, selectionArgs,null, null, order);
                 break;
             case PRODUCT_ID:
+                break;
+            case PHARMACY:
+                builder.setTables(DataBaseContract.PharmacyEntry.TABLE_NAME);
+                if(!TextUtils.isEmpty(order)){
+
+                    order = DataBaseContract.PharmacyEntry.DEFAULT_SORT;
+                }
+                cursor = builder.query(database, proyection, selection, selectionArgs,null, null, order);
+                break;
+            case PHARMACY_ID:
+                break;
+            case INVOICE:
+                builder.setTables(selection);
+                if(!TextUtils.isEmpty(order)){
+
+                    order = DataBaseContract.InvoiceEntry.DEFAULT_SORT;
+                }
+                cursor = builder.query(database, null, null, null,null, null, order);
+                break;
+            case INVOICE_ID:
+                break;
+            case STATUS:
+                break;
+            case STATUS_ID:
+                break;
+            case INVOICELINE:
+                break;
+            case INVOICELINE_ID:
                 break;
             case UriMatcher.NO_MATCH:
                 throw new IllegalArgumentException("ME LA COMES CHAVAL");
@@ -107,7 +139,7 @@ public class ManageProductProvider extends ContentProvider {
         }
 
         String sqlQuery = builder.buildQuery(proyection, selection, null, null, order, null);
-        cursor = builder.query(database, proyection, selection, selectionArgs,null, null, order);
+
         Log.i("TAG", sqlQuery);
 
         return cursor;

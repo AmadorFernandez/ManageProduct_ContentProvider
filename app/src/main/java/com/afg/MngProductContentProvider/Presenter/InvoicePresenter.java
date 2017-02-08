@@ -19,12 +19,15 @@ package com.afg.MngProductContentProvider.Presenter;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
-import com.afg.MngProductContentProvider.cursor.InvoiceCursorLoader;
+
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.IInvoicePresenter;
+import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
 /**
  * Created by amador on 4/02/17.
@@ -55,7 +58,9 @@ public class InvoicePresenter implements IInvoicePresenter, LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        return new InvoiceCursorLoader(view.getContext());
+        return new CursorLoader(view.getContext(), ManageProductContract.Invoice.CONTENT_URI,
+                ManageProductContract.Invoice.PROJECTIONS, DataBaseContract.InvoiceEntry.IN_PHARMACY_JOIN_PHARMACY, null,
+                DataBaseContract.InvoiceEntry.DEFAULT_SORT);
     }
 
     @Override
