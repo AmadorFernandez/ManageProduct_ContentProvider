@@ -19,11 +19,5 @@ public class ManageProductApplications extends Application {
         return context;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        this.context = this;
-        DataBaseHelper.getInstance().open();
 
-    }
 }

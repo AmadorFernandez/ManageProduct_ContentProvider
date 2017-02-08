@@ -173,7 +173,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
 
     @Override
     public void showProgressDialog() {
-        dialog.show();
+//        dialog.show();
     }
 
     @Override

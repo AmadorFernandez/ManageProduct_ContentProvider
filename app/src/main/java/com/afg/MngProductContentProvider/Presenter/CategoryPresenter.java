@@ -20,12 +20,14 @@ package com.afg.MngProductContentProvider.Presenter;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.cursor.CategoryCursorLoader;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
+import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
 /**
  * Created by usuario on 26/01/17.
@@ -61,7 +63,9 @@ public class CategoryPresenter implements ICategoryPresenter, LoaderManager.Load
         switch (i){
 
             case CATEGORY:
-               cursorLoader =  new CategoryCursorLoader(context);
+               cursorLoader =  new CursorLoader(context, ManageProductContract.Category.CONTENT_URI,
+                       ManageProductContract.Category.PROJECTION, null, null,
+                       ManageProductContract.Category.DEFAULT_SORT);
                 break;
 
 

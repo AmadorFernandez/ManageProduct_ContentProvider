@@ -21,9 +21,13 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+
+import com.afg.MngProductContentProvider.database.DataBaseHelper;
+import com.afg.MngProductContentProvider.database.DataBaseManager;
 
 /**
  * Created by usuario on 6/02/17.
@@ -43,6 +47,7 @@ public class ManageProductProvider extends ContentProvider {
     private static final int INVOICELINE_ID = 10;
     private static final int STATUS = 11;
     private static final int STATUS_ID = 12;
+    private SQLiteDatabase database;
 
     private static final UriMatcher uriMacher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -64,7 +69,12 @@ public class ManageProductProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+
+        database = DataBaseHelper.getInstance().openDataBase();
+
+
+
+        return true;
     }
 
     @Nullable
