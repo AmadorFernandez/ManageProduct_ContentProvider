@@ -18,19 +18,20 @@ package com.afg.MngProductContentProvider.Adapter;
  */
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afg.MngProductContentProvider.Model.Product;
 import com.afg.MngProductContentProvider.Presenter.ProductPresenter;
 import com.afg.MngProductContentProvider.R;
-import com.afg.MngProductContentProvider.database.DataBaseManager;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -42,165 +43,29 @@ import java.util.List;
  * Created by usuario on 18/11/16.
  */
 
-public class ProductAdapter extends ArrayAdapter<Product> implements Serializable {
-
-    private Context context;
-    private boolean ASC = true;
-    private ProductPresenter presenter;
-    private ProductPresenter.View view;
-    private ArrayList<Product> localList;
-
-    public ProductAdapter(final Context context, final ProductPresenter.View view) {
-
-        //Cuando aqui ponemos un tercer parametro, teneos que entener que el array interno es igual a este.
-        //Por eso cuando hacia un clear se borraba el del DAO.
-        //Para evitarlo o le hacemos un new ArayList (Lourdes) o a this le hacemos un addAll (Yo)
-        super(context, R.layout.item_product);
-        this.context = context;
-        this.view = view;
-        this.localList = new ArrayList<Product>();
-
-        new AsyncTask<Void, Void, List<Product>>() {
-            @Override
-            protected List<Product> doInBackground(Void... voids) {
-                return DataBaseManager.getInstance().getProducts();
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                view.showProgressDialog();
-            }
-
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                view.dismissProgressDialog();
-            }
-
-            @Override
-            protected void onPostExecute(List<Product> products) {
-                super.onPostExecute(products);
-                view.dismissProgressDialog();
-                addAll(products);
-                localList.addAll(new ArrayList<Product>(products));
-                refreshView();
-            }
-        }.execute();
+public class ProductAdapter extends CursorAdapter {
 
 
+    public ProductAdapter(Context context) {
+        super(context, null, 0);
 
     }
 
-    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 
-        View item = convertView;
-        ProductHolder p;
-
-        if (convertView == null){
-            LayoutInflater inflater = LayoutInflater.from(context);
-
-            item = inflater.inflate(R.layout.item_product, null);
-
-            p = new ProductHolder();
+        View rootView = LayoutInflater.from(context).inflate(R.layout.item_product, null);
 
 
-            p.img = (ImageView)item.findViewById(R.id.iv_img);
-            p.name = (TextView)item.findViewById(R.id.tv_nombre);
-            p.stock = (TextView)item.findViewById(R.id.tv_stock);
-            p.precio = (TextView)item.findViewById(R.id.tv_precio);
 
-            item.setTag(p);
-
-        }else
-            p = (ProductHolder) item.getTag();
-
-        Picasso.with(context).load(getItem(position).getImage()).into(p.img);
-        p.name.setText(getItem(position).getName());
-        p.stock.setText(getItem(position).getStock());
-        p.precio.setText(String.valueOf(getItem(position).getPrice()));
-
-        return item;
+        return rootView;
     }
 
-    public void sortAlphabetically(){
-        ASC = !ASC;
-
-        if(ASC)
-            sort(Product.NAME_COMPARATOR);
-        else
-            sort(Collections.reverseOrder());
-
-        notifyDataSetChanged();
-    }
-
-    public void addProduct(Product product){
-        add(product);
-        refreshView();
-    }
-
-    public void removeProduct(Product product){
-        remove(product);
-        refreshView();
-        notifyDataSetChanged();
-    }
-
-    public void updateListProduct(){
-
-        new AsyncTask<Void, Void, List<Product>>() {
-            @Override
-            protected List<Product> doInBackground(Void... voids) {
-                return DataBaseManager.getInstance().getProducts();
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                view.showProgressDialog();
-
-            }
-
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                view.dismissProgressDialog();
-            }
-
-            @Override
-            protected void onPostExecute(List<Product> products) {
-                super.onPostExecute(products);
-                clear();
-                addAll(products);
-                refreshView();
-                view.dismissProgressDialog();
-            }
-        }.execute();
-
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
 
     }
 
-    private void hideList(boolean hide){
-
-    }
-
-    public void addAt(Product product, int position){
-        insert(product, position);
-        notifyDataSetChanged();
-        refreshView();
-    }
-
-    public void deleteProduct(Product product){
-        remove(product);
-        notifyDataSetChanged();
-        refreshView();
-    }
-
-    private void refreshView(){
-        ASC = !ASC;
-        sortAlphabetically();
-    }
 
     class ProductHolder{
         ImageView img;

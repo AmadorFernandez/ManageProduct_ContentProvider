@@ -14,10 +14,18 @@ public class ManageProductApplications extends Application {
 
     public static Context context;
 
+
     public static Context getContext(){
 
         return context;
     }
+
+    public ManageProductApplications(){
+
+        context = this;
+    }
+
+
 
 
 }

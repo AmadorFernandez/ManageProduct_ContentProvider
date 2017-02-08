@@ -25,7 +25,6 @@ import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Category;
 import com.afg.MngProductContentProvider.cursor.CategoryCursorLoader;
-import com.afg.MngProductContentProvider.database.DataBaseManager;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
 
 /**
@@ -45,21 +44,21 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
 
     public void addCategory(Category category){
 
-        DataBaseManager.getInstance().addCategoty(category);
+     //   DataBaseManager.getInstance().addCategoty(category);
         reloadCategories();
 
     }
 
     public void updateCategory(Category category){
 
-        DataBaseManager.getInstance().updateCategory(category);
+       // DataBaseManager.getInstance().updateCategory(category);
         reloadCategories();
 
     }
 
     public void deleteCategory(Category category){
 
-        DataBaseManager.getInstance().deleteCategory(category);
+     //   DataBaseManager.getInstance().deleteCategory(category);
         reloadCategories();
     }
 

@@ -31,12 +31,15 @@ public class DataBaseContract {
 
         public static final String TABLE_NAME = "category";
         public static final String COLUMN_NAME = "ca_name";
+        public static final String DEFAULT_SORT = COLUMN_NAME;
         public static final String SQL_CREATE_ENTRIES = String.format("CREATE TABLE %s (%s " +
                         "INTEGER PRIMARY KEY AUTOINCREMENT," + "%s TEXT NOT NULL)", TABLE_NAME,
                 BaseColumns._ID, COLUMN_NAME);
         public static final String[] ALL_COLUMS = {String.valueOf(_ID), COLUMN_NAME};
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
+
+        public static final String INSERT_ENTRIES = "INSERT INTO category (1, 'Xexuales')";
 
     }
 

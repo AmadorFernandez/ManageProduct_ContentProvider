@@ -66,7 +66,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         dialog = new ProgressDialog(getContext());
-        mAdapter = new ProductAdapter(getContext(), this);
+      //  mAdapter = new ProductAdapter(getContext(), this);
         setRetainInstance(true);
 
 
@@ -140,7 +140,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     }
 
     public void showProduct() {
-        mAdapter.updateListProduct();
+      //  mAdapter.updateListProduct();
 
     }
 
@@ -197,7 +197,7 @@ public class ListProduct_Fragment extends ListFragment implements IProduct, Prod
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_sort_product:
-                mAdapter.sortAlphabetically();
+              //  mAdapter.sortAlphabetically();
                 break;
         }
 

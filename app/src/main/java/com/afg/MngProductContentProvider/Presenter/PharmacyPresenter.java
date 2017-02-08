@@ -26,7 +26,6 @@ import android.os.Bundle;
 import com.afg.MngProductContentProvider.Model.Pharmacy;
 import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.cursor.PharmacyCursorLoader;
-import com.afg.MngProductContentProvider.database.DataBaseManager;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyAdd;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyDelete;
 import com.afg.MngProductContentProvider.interfaces.IActionPharmacyUpdate;
@@ -50,74 +49,16 @@ public class PharmacyPresenter implements LoaderManager.LoaderCallbacks<Cursor> 
 
     public void addPharmacy(Pharmacy pharmacy){
 
-        DataBaseManager.getInstance().addPharmacy(pharmacy, new IActionPharmacyAdd() {
-            @Override
-            public void onAddPharmacy(Pharmacy pharmacy) {
-
-                viewPharmacy.actionOK(R.string.action_pharmacy_add);
-                reloadPharmacies();
-            }
-
-            @Override
-            public void onPreAction(int codeMsg) {
-
-                viewPharmacy.startProgress(codeMsg);
-            }
-
-            @Override
-            public void onFailAction(int codeMsg) {
-
-                viewPharmacy.failAction(codeMsg);
-            }
-        });
     }
 
     public void updatePharmacy(Pharmacy pharmacy){
 
-        DataBaseManager.getInstance().updatePharmacy(pharmacy, new IActionPharmacyUpdate() {
-            @Override
-            public void onUpdatePharmacy(Pharmacy pharmacy) {
 
-                viewPharmacy.actionOK(R.string.action_update_pharmacy_ok);
-                reloadPharmacies();
-            }
-
-            @Override
-            public void onPreAction(int codeMsg) {
-
-                viewPharmacy.startProgress(codeMsg);
-            }
-
-            @Override
-            public void onFailAction(int codeMsg) {
-
-                viewPharmacy.failAction(codeMsg);
-            }
-        });
     }
 
     public void deletePharmacy(Pharmacy pharmacy){
 
-        DataBaseManager.getInstance().deletePharmacy(pharmacy, new IActionPharmacyDelete() {
-            @Override
-            public void onDeletePharmacy(Pharmacy pharmacy) {
 
-                viewPharmacy.actionOK(R.string.action_delete_pharmacy_ok);
-                reloadPharmacies();
-            }
-
-            @Override
-            public void onPreAction(int codeMsg) {
-
-                viewPharmacy.startProgress(codeMsg);
-            }
-
-            @Override
-            public void onFailAction(int codeMsg) {
-
-                viewPharmacy.failAction(codeMsg);
-            }
-        });
     }
 
     public void getAllPharmacies(){

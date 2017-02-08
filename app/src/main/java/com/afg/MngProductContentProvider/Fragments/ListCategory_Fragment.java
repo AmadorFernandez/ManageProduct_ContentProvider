@@ -61,6 +61,11 @@ public class ListCategory_Fragment extends Fragment implements ICategoryPresente
         adapter.swapCursor(cursor);
     }
 
+    @Override
+    public Cursor getCursor() {
+        return adapter.getCursor();
+    }
+
     public void addCategory(Category category){
 
         presenter.addCategory(category);

@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.cursor.CategoryCursorLoader;
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
 import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
@@ -65,7 +66,7 @@ public class CategoryPresenter implements ICategoryPresenter, LoaderManager.Load
             case CATEGORY:
                cursorLoader =  new CursorLoader(context, ManageProductContract.Category.CONTENT_URI,
                        ManageProductContract.Category.PROJECTION, null, null,
-                       ManageProductContract.Category.DEFAULT_SORT);
+                       DataBaseContract.CategoryEntry.DEFAULT_SORT);
                 break;
 
 
@@ -78,6 +79,8 @@ public class CategoryPresenter implements ICategoryPresenter, LoaderManager.Load
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         view.setCursorCategory(cursor);
+        view.getCursor().setNotificationUri(context.getContentResolver(),
+                ManageProductContract.Category.CONTENT_URI);
 
     }
 

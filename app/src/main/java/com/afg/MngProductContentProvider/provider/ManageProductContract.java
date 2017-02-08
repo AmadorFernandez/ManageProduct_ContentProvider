@@ -21,7 +21,6 @@ public class ManageProductContract  {
         public static final String NAME = "name";
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, CONTENT_PATH);
         public static final String[] PROJECTION = {String.valueOf(_ID), NAME};
-        public static final String DEFAULT_SORT = NAME;
 
 
     }
@@ -42,9 +41,7 @@ public class ManageProductContract  {
                 BRAND, CATEGORY,
                 DESCRIPTION, DOSAGE,
                 IMAGE, PRICE,
-                STOCK};
-
-
+                STOCK };
     }
 
     public static class Pharmacy implements BaseColumns{

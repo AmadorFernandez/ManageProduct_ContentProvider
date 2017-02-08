@@ -22,12 +22,14 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.database.DataBaseHelper;
-import com.afg.MngProductContentProvider.database.DataBaseManager;
 
 /**
  * Created by usuario on 6/02/17.
@@ -79,8 +81,36 @@ public class ManageProductProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        return null;
+    public Cursor query(Uri uri, String[] proyection, String selection, String[] selectionArgs, String order) {
+
+        Cursor cursor = null;
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+
+        switch (uriMacher.match(uri)){
+
+            case CATEGORY:
+                builder.setTables(DataBaseContract.CategoryEntry.TABLE_NAME);
+                if(!TextUtils.isEmpty(order)){
+
+                    order = DataBaseContract.CategoryEntry.DEFAULT_SORT;
+                }
+                break;
+            case CATEGORY_ID:
+                break;
+            case PRODUCT:
+                break;
+            case PRODUCT_ID:
+                break;
+            case UriMatcher.NO_MATCH:
+                throw new IllegalArgumentException("ME LA COMES CHAVAL");
+
+        }
+
+        String sqlQuery = builder.buildQuery(proyection, selection, null, null, order, null);
+        cursor = builder.query(database, proyection, selection, selectionArgs,null, null, order);
+        Log.i("TAG", sqlQuery);
+
+        return cursor;
     }
 
     @Nullable
