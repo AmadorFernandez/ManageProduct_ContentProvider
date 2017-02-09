@@ -36,4 +36,6 @@
     <string name="action_pharmacy_add">Farmacia guardada</string>
     <string name="action_update_pharmacy_ok">Farmacia actualizada</string>
     <string name="action_delete_pharmacy_ok">Farmacia borrada</string>
+
+    <string name="error_insert">Error al insertar</string>
 </resources>

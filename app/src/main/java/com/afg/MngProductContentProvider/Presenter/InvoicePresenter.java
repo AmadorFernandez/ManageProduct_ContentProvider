@@ -65,8 +65,8 @@ public class InvoicePresenter implements IInvoicePresenter, LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-
         view.setCursorCategory(cursor);
+        cursor.setNotificationUri(view.getContext().getContentResolver(), ManageProductContract.Invoice.CONTENT_URI);
     }
 
     @Override

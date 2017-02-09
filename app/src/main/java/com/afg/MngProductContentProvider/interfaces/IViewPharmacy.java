@@ -35,4 +35,6 @@ public interface IViewPharmacy {
     Context getContext();
 
     void setCursorPharmacy(Cursor cursor);
+
+    void showMsg(String message);
 }

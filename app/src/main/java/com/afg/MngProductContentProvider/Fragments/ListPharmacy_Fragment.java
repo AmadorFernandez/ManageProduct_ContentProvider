@@ -197,6 +197,11 @@ public class ListPharmacy_Fragment extends Fragment implements IViewPharmacy {
         dialog.dismiss();
     }
 
+    @Override
+    public void showMsg(String message) {
+
+    }
+
     private void showMsg(int codeMsg){
 
         Snackbar.make(parent, getString(codeMsg), Snackbar.LENGTH_LONG).show();

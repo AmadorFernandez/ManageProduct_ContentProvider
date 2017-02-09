@@ -19,9 +19,11 @@ package com.afg.MngProductContentProvider.Presenter;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Category;
@@ -48,21 +50,39 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
     public void addCategory(Category category){
 
      //   DataBaseManager.getInstance().addCategoty(category);
-        reloadCategories();
+
+        ContentValues params = new ContentValues();
+        params.put(ManageProductContract.Category.NAME, category.getName());
+
+        try {
+
+            view.getContext().getContentResolver().insert(ManageProductContract.Category.CONTENT_URI, params);
+
+        } catch (SQLException e) {
+
+            view.showMsg(e.getMessage());
+            e.printStackTrace();
+        }
+
+        //  reloadCategories();
 
     }
 
     public void updateCategory(Category category){
 
-       // DataBaseManager.getInstance().updateCategory(category);
-        reloadCategories();
+        final ContentValues params = new ContentValues();
+        final String[] whereParams = {String.valueOf(category.getId())};
+        params.put(ManageProductContract.Category.NAME, category.getName());
+        view.getContext().getContentResolver().update(ManageProductContract.Category.CONTENT_URI, params, "_id = ?", whereParams);
 
     }
 
     public void deleteCategory(Category category){
 
-     //   DataBaseManager.getInstance().deleteCategory(category);
-        reloadCategories();
+
+        final ContentValues params = new ContentValues();
+        final String[] whereParams = {String.valueOf(category.getId())};
+        view.getContext().getContentResolver().delete(ManageProductContract.Category.CONTENT_URI, "_id = ?", whereParams);
     }
 
 
@@ -84,6 +104,7 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
         view.setCursorCategory(cursor);
+        cursor.setNotificationUri(view.getContext().getContentResolver(), ManageProductContract.Category.CONTENT_URI);
     }
 
     @Override

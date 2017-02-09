@@ -18,9 +18,11 @@ package com.afg.MngProductContentProvider.provider;
  */
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -28,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.database.DataBaseHelper;
 
@@ -97,6 +100,7 @@ public class ManageProductProvider extends ContentProvider {
                 break;
             case PRODUCT:
                 builder.setTables(DataBaseContract.ProductEntry.TABLE_NAME);
+           //     builder.setProjectionMap(ManageProductContract.Product.productProjectionMaps);
                 if(!TextUtils.isEmpty(order)){
 
                     order = DataBaseContract.ProductEntry.DEFAULT_SORT;
@@ -139,7 +143,6 @@ public class ManageProductProvider extends ContentProvider {
         }
 
         String sqlQuery = builder.buildQuery(proyection, selection, null, null, order, null);
-
         Log.i("TAG", sqlQuery);
 
         return cursor;
@@ -154,16 +157,85 @@ public class ManageProductProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+
+        Uri laUri = null;
+        long id = -1;
+
+
+        switch (uriMacher.match(uri)){
+
+            case CATEGORY:
+                id = database.insert(DataBaseContract.CategoryEntry.TABLE_NAME, null, contentValues);
+                laUri = ContentUris.withAppendedId(uri, id);
+                break;
+            case PRODUCT:
+                id = database.insert(DataBaseContract.ProductEntry.TABLE_NAME, null, contentValues);
+                laUri = ContentUris.withAppendedId(uri, id);
+                break;
+            case PHARMACY:
+                id = database.insert(DataBaseContract.PharmacyEntry.TABLE_NAME, null, contentValues);
+                laUri = ContentUris.withAppendedId(uri, id);
+                break;
+        }
+
+        if(id !=  -1){
+
+            getContext().getContentResolver().notifyChange(laUri, null);
+
+        }else {
+
+            throw new SQLException(getContext().getString(R.string.error_insert));
+        }
+
+        return uri;
     }
 
     @Override
     public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+
+
+
+        int result = 0;
+
+        switch (uriMacher.match(uri)) {
+
+            case CATEGORY:
+                result = database.delete(DataBaseContract.CategoryEntry.TABLE_NAME, s, strings);
+                break;
+            case PRODUCT:
+                result = database.delete(DataBaseContract.ProductEntry.TABLE_NAME, s, strings);
+                break;
+            case PHARMACY:
+                result = database.delete(DataBaseContract.PharmacyEntry.TABLE_NAME, s, strings);
+                break;
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return result;
+
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+
+        Uri laUri = null;
+        int result = 0;
+
+        switch (uriMacher.match(uri)) {
+
+            case CATEGORY:
+                result = database.update(DataBaseContract.CategoryEntry.TABLE_NAME, contentValues, s, strings);
+                break;
+            case PRODUCT:
+                result = database.update(DataBaseContract.ProductEntry.TABLE_NAME, contentValues, s, strings);
+                break;
+            case PHARMACY:
+                result = database.update(DataBaseContract.PharmacyEntry.TABLE_NAME, contentValues, s, strings);
+                break;
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return result;
+
     }
 }

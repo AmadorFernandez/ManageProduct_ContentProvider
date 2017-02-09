@@ -151,6 +151,11 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
     }
 
     @Override
+    public void showMsg(String message) {
+
+    }
+
+    @Override
     public void onDetach() {
         adapter = null;
         super.onDetach();

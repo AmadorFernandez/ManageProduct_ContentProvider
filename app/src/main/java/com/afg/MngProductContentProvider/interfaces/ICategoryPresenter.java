@@ -34,6 +34,8 @@ public interface ICategoryPresenter {
         void setCursorCategory(Cursor cursor);
 
         Cursor getCursor();
+
+        void showMsg(String message);
     }
 
     void getAllCategoies();

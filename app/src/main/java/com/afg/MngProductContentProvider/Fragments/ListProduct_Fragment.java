@@ -43,8 +43,11 @@ import com.afg.MngProductContentProvider.Adapter.ProductAdapter;
 import com.afg.MngProductContentProvider.Presenter.ProductPresenter;
 import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.interfaces.IProduct;
+import com.afg.MngProductContentProvider.interfaces.IProduct;
+import com.afg.MngProductContentProvider.interfaces.IProductPresenter;
 
-public class ListProduct_Fragment extends ListFragment implements IProduct, ProductPresenter.View{
+
+public class ListProduct_Fragment extends ListFragment implements IProduct, IProductPresenter.View {
 
     public static Product p;
 

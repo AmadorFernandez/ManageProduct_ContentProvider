@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.afg.MngProductContentProvider.Adapter.ListCategoryAdapter;
 import com.afg.MngProductContentProvider.Model.Category;
@@ -64,6 +65,12 @@ public class ListCategory_Fragment extends Fragment implements ICategoryPresente
     @Override
     public Cursor getCursor() {
         return adapter.getCursor();
+    }
+
+    @Override
+    public void showMsg(String message) {
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
     }
 
     public void addCategory(Category category){

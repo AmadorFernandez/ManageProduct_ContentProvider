@@ -6,6 +6,8 @@ import android.provider.BaseColumns;
 
 import com.afg.MngProductContentProvider.database.DataBaseContract;
 
+import java.util.HashMap;
+
 /**
  * Clase que guarda el esquema de la clase de la base de datos de la app
  *
@@ -44,6 +46,21 @@ public class ManageProductContract  {
                 DESCRIPTION, DOSAGE,
                 IMAGE, PRICE,
                 STOCK };
+        public static final HashMap<String, String> productProjectionMaps;
+
+        static {
+
+            productProjectionMaps  = new HashMap<String, String>();
+            productProjectionMaps.put(CATEGORY, DataBaseContract.ProductEntry.CATEGORY_ID);
+            productProjectionMaps.put(NAME, DataBaseContract.ProductEntry.COLUMN_NAME);
+            productProjectionMaps.put(DESCRIPTION, DataBaseContract.ProductEntry.COLUMN_DESCRIPTION);
+            productProjectionMaps.put(BRAND, DataBaseContract.ProductEntry.COLUMN_BRAND);
+            productProjectionMaps.put(DOSAGE, DataBaseContract.ProductEntry.COLUMN_DOSAGE);
+            productProjectionMaps.put(PRICE, DataBaseContract.ProductEntry.COLUMN_PRICE);
+            productProjectionMaps.put(STOCK, DataBaseContract.ProductEntry.COLUMN_STOCK);
+            productProjectionMaps.put(IMAGE, DataBaseContract.ProductEntry.COLUMN_IMAGE);
+
+        }
     }
 
     public static class Pharmacy implements BaseColumns{
