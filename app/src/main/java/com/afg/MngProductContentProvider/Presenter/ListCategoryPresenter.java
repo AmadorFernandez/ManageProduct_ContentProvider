@@ -25,7 +25,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import com.afg.MngProductContentProvider.Model.Category;
+import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
+import com.afg.MngProductContentProvider.provider.ManageProductContract;
 
 
 /**
@@ -72,7 +74,10 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(view.getContext());
+
+        return new CursorLoader(view.getContext(), ManageProductContract.Category.CONTENT_URI,
+                ManageProductContract.Category.PROJECTION, null, null,
+                DataBaseContract.CategoryEntry.DEFAULT_SORT);
     }
 
     @Override
