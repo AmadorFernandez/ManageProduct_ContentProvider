@@ -19,6 +19,7 @@ package com.afg.MngProductContentProvider.Presenter;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -73,7 +74,9 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
         final ContentValues params = new ContentValues();
         final String[] whereParams = {String.valueOf(category.getId())};
         params.put(ManageProductContract.Category.NAME, category.getName());
-        view.getContext().getContentResolver().update(ManageProductContract.Category.CONTENT_URI, params, "_id = ?", whereParams);
+        view.getContext().getContentResolver().update(ContentUris.withAppendedId(ManageProductContract.Category.CONTENT_URI,
+                category.getId())
+                , params, "_id = ?", whereParams);
 
     }
 
@@ -82,7 +85,9 @@ public class ListCategoryPresenter implements ICategoryPresenter, LoaderManager.
 
         final ContentValues params = new ContentValues();
         final String[] whereParams = {String.valueOf(category.getId())};
-        view.getContext().getContentResolver().delete(ManageProductContract.Category.CONTENT_URI, "_id = ?", whereParams);
+        view.getContext().getContentResolver().delete(ContentUris.withAppendedId(ManageProductContract.Category.CONTENT_URI,
+                category.getId()), "_id = ?", whereParams);
+
     }
 
 

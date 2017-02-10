@@ -151,6 +151,33 @@ public class ManageProductProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
+
+        String mimetype;
+
+        switch (uriMacher.match(uri)){
+
+            case CATEGORY:
+                mimetype = "vnd.android.cursor.dir/vnd.afg.MngProductContentProvider.provider";
+                break;
+            case CATEGORY_ID:
+                mimetype = "vnd.android.cursor.item/vnd.afg.MngProductContentProvider.provider";
+                break;
+            case PHARMACY:
+                mimetype = "vnd.android.cursor.dir/vnd.afg.MngProductContentProvider.provider";
+                break;
+            case PHARMACY_ID:
+                mimetype = "vnd.android.cursor.item/vnd.afg.MngProductContentProvider.provider";
+                break;
+            case PRODUCT:
+                mimetype = "vnd.android.cursor.dir/vnd.afg.MngProductContentProvider.provider";
+                break;
+            case PRODUCT_ID:
+                mimetype = "vnd.android.cursor.item/vnd.afg.MngProductContentProvider.provider";
+                break;
+
+
+        }
+
         return null;
     }
 
@@ -226,6 +253,11 @@ public class ManageProductProvider extends ContentProvider {
             case CATEGORY:
                 result = database.update(DataBaseContract.CategoryEntry.TABLE_NAME, contentValues, s, strings);
                 break;
+            case CATEGORY_ID:
+                result = database.update(DataBaseContract.CategoryEntry.TABLE_NAME, contentValues, s, new String[]{
+                        uri.getLastPathSegment()
+                });
+                break;
             case PRODUCT:
                 result = database.update(DataBaseContract.ProductEntry.TABLE_NAME, contentValues, s, strings);
                 break;
@@ -236,6 +268,5 @@ public class ManageProductProvider extends ContentProvider {
 
         getContext().getContentResolver().notifyChange(uri, null);
         return result;
-
     }
 }

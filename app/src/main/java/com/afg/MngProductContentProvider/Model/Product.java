@@ -17,10 +17,10 @@ public class Product implements Parcelable, Comparable<Product> {
     String dosage;
     Double price;
     String stock;
-    String image;
+    byte[] image;
     int idCategory;
 
-    public Product(long ID, String name, String description, String brand, String dosage, Double price, String stock, String image, int idCategory) {
+    public Product(long ID, String name, String description, String brand, String dosage, Double price, String stock, byte[] image, int idCategory) {
         this.ID = ID;
         this.name = name;
         this.description = description;
@@ -62,7 +62,7 @@ public class Product implements Parcelable, Comparable<Product> {
         return stock;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
@@ -81,25 +81,13 @@ public class Product implements Parcelable, Comparable<Product> {
         }
     };
 
-    /****PARCELABLE IMPLEMENTATION******/
-    protected Product(Parcel in) {
-        ID = in.readInt();
-        name = in.readString();
-        description = in.readString();
-        brand = in.readString();
-        dosage = in.readString();
-        stock = in.readString();
-        image = in.readString();
-        idCategory = in.readInt();
-    }
-
     public Product() {
 
         this.ID = 0;
     }
 
     public Product(String name, String description, String brand, String dosage, Double price,
-                   String stock, String image, int idCategory) {
+                   String stock, byte[] image, int idCategory) {
 
         this.name = name;
         this.description = description;
@@ -110,35 +98,6 @@ public class Product implements Parcelable, Comparable<Product> {
         this.image = image;
         this.idCategory = idCategory;
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(ID);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeString(brand);
-        dest.writeString(dosage);
-        dest.writeString(stock);
-        dest.writeString(image);
-        dest.writeInt(idCategory);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
 
     @Override
     public int compareTo(Product product) {
@@ -176,11 +135,53 @@ public class Product implements Parcelable, Comparable<Product> {
         this.stock = stock;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
     public void setIdCategory(int idCategory) {
         this.idCategory = idCategory;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.ID);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.brand);
+        dest.writeString(this.dosage);
+        dest.writeValue(this.price);
+        dest.writeString(this.stock);
+        dest.writeByteArray(this.image);
+        dest.writeInt(this.idCategory);
+    }
+
+    protected Product(Parcel in) {
+        this.ID = in.readLong();
+        this.name = in.readString();
+        this.description = in.readString();
+        this.brand = in.readString();
+        this.dosage = in.readString();
+        this.price = (Double) in.readValue(Double.class.getClassLoader());
+        this.stock = in.readString();
+        this.image = in.createByteArray();
+        this.idCategory = in.readInt();
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

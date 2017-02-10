@@ -83,7 +83,7 @@ public class DataBaseContract {
                         "%s TEXT NOT NULL," +
                         "%s REAL NOT NULL," +
                         "%s INTEGER NOT NULL," +
-                        "%s TEXT NOT NULL," +
+                        "%s BLOB NOT NULL," +
                         "%s INTEGER NOT NULL %s)",
                 TABLE_NAME,
                 _ID,

@@ -2,8 +2,11 @@ package com.afg.MngProductContentProvider.Fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -22,6 +25,9 @@ import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.interfaces.ICategoryPresenter;
 import com.afg.MngProductContentProvider.interfaces.IProduct;
+import com.afg.MngProductContentProvider.utils.ImageResource;
+
+import java.io.FileNotFoundException;
 
 public class ManageProduct_Fragment extends Fragment implements ICategoryPresenter.View {
 
@@ -32,6 +38,7 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
     boolean update = false;
     SimpleCursorAdapter adapter;
     private CategoryPresenter presenter;
+    private static final int ACTION_GALERY = 1;
 
     FloatingActionButton mFabSave;
     IManageListener mCallBack;
@@ -55,7 +62,7 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle args) {
         super.onCreateView(inflater, container,  args);
         View rootView = inflater.inflate(R.layout.fragment_add_product, container, false);
-        mImage = (ImageView) rootView.findViewById(R.id.ib_imagen);
+        mImage = (ImageView) rootView.findViewById(R.id.button2);
         mName = (TextInputLayout) rootView.findViewById(R.id.til_nombre);
         mTrademark = (TextInputLayout) rootView.findViewById(R.id.til_marca);
         mDosage = (TextInputLayout) rootView.findViewById(R.id.til_dosage);
@@ -66,7 +73,39 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
         mFabSave = (FloatingActionButton)rootView.findViewById(R.id.fab_guardar);
         mCategory = (Spinner)rootView.findViewById(R.id.spinner);
         presenter = new CategoryPresenter(this);
+
+        mImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, ACTION_GALERY);
+            }
+        });
+
         return rootView;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == getActivity().RESULT_OK){
+
+            switch (requestCode){
+
+                case ACTION_GALERY:
+                    try {
+                        Bitmap bitmap = ImageResource.decodeUri(data.getData());
+                        mImage.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -88,7 +127,7 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
             mDosage.getEditText().setText(p.getDosage());
             mStock.getEditText().setText(p.getStock());
             mPrice.getEditText().setText(String.valueOf(p.getPrice()));
-            mUrl.getEditText().setText(p.getImage());
+            mImage.setImageBitmap(ImageResource.getBitmap(p.getImage()));
             mCategory.setSelection(0);
             mDescription.getEditText().setText(p.getDescription());
             update = true;
@@ -122,16 +161,20 @@ public class ManageProduct_Fragment extends Fragment implements ICategoryPresent
         cursor.moveToPosition(mCategory.getSelectedItemPosition());
         int i = cursor.getInt(0);
 
-        mCallBack.saveProduct(p, new Product(
+        try {
+            mCallBack.saveProduct(p, new Product(
 
-                mName.getEditText().getText().toString(),
-                mDescription.getEditText().getText().toString(),
-                mTrademark.getEditText().getText().toString(),
-                mDosage.getEditText().getText().toString(),
-                Double.valueOf(mPrice.getEditText().getText().toString()),
-                mStock.getEditText().getText().toString(),
-                mUrl.getEditText().getText().toString(),i
-                ));
+                    mName.getEditText().getText().toString(),
+                    mDescription.getEditText().getText().toString(),
+                    mTrademark.getEditText().getText().toString(),
+                    mDosage.getEditText().getText().toString(),
+                    Double.valueOf(mPrice.getEditText().getText().toString()),
+                    mStock.getEditText().getText().toString(),
+                    ImageResource.getByte(ImageResource.drawableToBitmap(mImage.getDrawable())),i
+                    ));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

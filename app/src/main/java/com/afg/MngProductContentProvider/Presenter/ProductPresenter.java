@@ -104,6 +104,7 @@ public class ProductPresenter implements IProductPresenter, LoaderManager.Loader
             params.put(ManageProductContract.Product.IMAGE, product.getImage());
             params.put(ManageProductContract.Product.PRICE, product.getPrice());
             params.put(ManageProductContract.Product.STOCK, product.getStock());
+            params.put(ManageProductContract.Product.IMAGE, product.getImage());
             view.getContext().getContentResolver().insert(ManageProductContract.Product.CONTENT_URI, params);
 
         } catch (SQLException e) {

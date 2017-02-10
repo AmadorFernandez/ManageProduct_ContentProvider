@@ -33,6 +33,7 @@ import com.afg.MngProductContentProvider.Model.Product;
 import com.afg.MngProductContentProvider.Presenter.ProductPresenter;
 import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.provider.ManageProductContract;
+import com.afg.MngProductContentProvider.utils.ImageResource;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -69,6 +70,7 @@ public class ProductAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ProductHolder holder = (ProductHolder)view.getTag();
+        holder.img.setImageBitmap(ImageResource.getBitmap(cursor.getBlob(6)));
         holder.name.setText(cursor.getString(1));
         holder.stock.setText(String.valueOf(cursor.getInt(8)));
         holder.precio.setText(String.valueOf(cursor.getFloat(7)));
@@ -85,7 +87,7 @@ public class ProductAdapter extends CursorAdapter {
         product.setIdCategory(getCursor().getInt(3));
         product.setDescription(getCursor().getString(4));
         product.setDosage(getCursor().getString(5));
-        product.setImage(getCursor().getString(6));
+        product.setImage(getCursor().getBlob(6));
         product.setPrice(getCursor().getDouble(7));
         product.setStock(getCursor().getString(8));
         return product;
