@@ -162,7 +162,7 @@ public class DataBaseContract {
         public static final String IN_STATUS_JOIN_STATUS = String.format("INNER JOIN %s s ON i.%s = s.%s  ", DataBaseContract.StatusEntry.TABLE_NAME,
                 STATUS_ID, DataBaseContract.StatusEntry._ID);
         public static final String IN_PHARMACY_JOIN_PHARMACY = String.format("%s i INNER JOIN %s p ON i.%s = p.%s %s", TABLE_NAME,
-                DataBaseContract.PharmacyEntry.TABLE_NAME, _ID, DataBaseContract.PharmacyEntry._ID, IN_STATUS_JOIN_STATUS);
+                DataBaseContract.PharmacyEntry.TABLE_NAME, PHARMACY_ID, DataBaseContract.PharmacyEntry._ID, IN_STATUS_JOIN_STATUS);
         public static final String REFERENCE_ID_PHARMACY = String.format("REFERENCES %s (%s) ON UPDATE CASCADE ON" +
                 " DELETE RESTRICT",  DataBaseContract.PharmacyEntry.TABLE_NAME, DataBaseContract.PharmacyEntry._ID);
         public static final String[] COLUMNS_JOIN_PHARMACY_STATUS = {
@@ -191,7 +191,8 @@ public class DataBaseContract {
         public static final String SQL_DELETE_ENTRIES = String.format("DROP TABLE IF EXISTS %s",
                 TABLE_NAME);
 
-        public static final String SQL_INSERT_ENTRIES = "INSERT INTO invoice VALUES (1, '2017-02-01', 1, 1)";
+        public static final String SQL_INSERT_ENTRIES = "INSERT INTO invoice VALUES (1, 1,'2017-02-01', 1)," +
+                "(2, 1,'2017-02-22', 1), (3, 1,'2017-02-03', 1)";
 
         public static final String DEFAULT_SORT = COLUMN_IN_DATE;
     }

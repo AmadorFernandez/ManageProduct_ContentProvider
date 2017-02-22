@@ -34,6 +34,10 @@ import com.afg.MngProductContentProvider.R;
 import com.afg.MngProductContentProvider.database.DataBaseContract;
 import com.afg.MngProductContentProvider.database.DataBaseHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Created by usuario on 6/02/17.
  */
@@ -125,9 +129,21 @@ public class ManageProductProvider extends ContentProvider {
 
                     order = DataBaseContract.InvoiceEntry.DEFAULT_SORT;
                 }
-                cursor = builder.query(database, null, null, null,null, null, order);
+
+                cursor = builder.query(database, proyection, null, null, null, null, order);
+
                 break;
             case INVOICE_ID:
+
+                builder.setTables(selection);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_YEAR, -2);
+                String fecha = simpleDateFormat.format(calendar.getTime());
+                builder.appendWhere("Date("+DataBaseContract.InvoiceEntry.COLUMN_IN_DATE+") <= Date('"+fecha+"')  AND "+
+                        DataBaseContract.InvoiceEntry.STATUS_ID + " = "+uri.getLastPathSegment());
+                cursor = builder.query(database, proyection, null, null, null, null, order);
+
                 break;
             case STATUS:
                 break;

@@ -60,7 +60,7 @@ public class ListInvoiceAdapter extends CursorAdapter {
 
         InvoiceHolder holder = (InvoiceHolder)view.getTag();
         holder.txvNamePharmacy.setText(cursor.getString(0));
-        holder.txvStatus.setText(cursor.getString(2));
-        holder.txvDate.setText(cursor.getString(1));
+        holder.txvStatus.setText(cursor.getString(1));
+        holder.txvDate.setText(cursor.getString(2));
     }
 }

@@ -18,19 +18,29 @@ package com.afg.MngProductContentProvider.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.afg.MngProductContentProvider.Adapter.ListInvoiceAdapter;
+import com.afg.MngProductContentProvider.Presenter.HomeFragmentPresenter;
+import com.afg.MngProductContentProvider.Presenter.InvoicePresenter;
 import com.afg.MngProductContentProvider.R;
+import com.afg.MngProductContentProvider.interfaces.IInvoicePresenter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home_Fragment extends Fragment {
+public class Home_Fragment extends Fragment implements IInvoicePresenter.View
+{
 
+    private HomeFragmentPresenter presenter;
+    private ListView listView;
+    private ListInvoiceAdapter adapter;
 
     public Home_Fragment() {
         // Required empty public constructor
@@ -40,8 +50,24 @@ public class Home_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        listView = (ListView)rootView.findViewById(R.id.listInvoiceActive);
+        presenter = new HomeFragmentPresenter(this);
+        adapter = new ListInvoiceAdapter(getContext());
+        listView.setAdapter(adapter);
+        return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.getAllInvoices();
+    }
+
+    @Override
+    public void setCursorCategory(Cursor cursor) {
+
+        adapter.swapCursor(cursor);
+    }
 }
