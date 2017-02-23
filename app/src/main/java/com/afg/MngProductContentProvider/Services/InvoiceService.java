@@ -44,16 +44,28 @@ public class InvoiceService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         Home_Fragment.getPresenter().getAllInvoices();
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
 
+        int x = 0;
+
         super.onDestroy();
+
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
     }
 }
