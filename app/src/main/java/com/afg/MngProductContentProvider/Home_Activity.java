@@ -17,6 +17,7 @@ package com.afg.MngProductContentProvider;
  *  jose.gallardo994@gmail.com
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -42,6 +43,7 @@ import com.afg.MngProductContentProvider.Model.Category;
 import com.afg.MngProductContentProvider.Model.Pharmacy;
 import com.afg.MngProductContentProvider.Model.Product;
 import com.afg.MngProductContentProvider.Presenter.ProductPresenter;
+import com.afg.MngProductContentProvider.Services.InvoiceService;
 import com.afg.MngProductContentProvider.utils.DialogoConfirmacion;
 
 public class Home_Activity extends AppCompatActivity implements ListProduct_Fragment.IListProductListener,
@@ -79,6 +81,7 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent();
+        startService(new Intent(this, InvoiceService.class));
         showHome();
 
 
@@ -90,9 +93,10 @@ public class Home_Activity extends AppCompatActivity implements ListProduct_Frag
         if(mDrawer.isDrawerOpen(GravityCompat.START))
             mDrawer.closeDrawer(GravityCompat.START);
 
-        else if(getSupportFragmentManager().getBackStackEntryCount() > 0 || salir)
+        else if(getSupportFragmentManager().getBackStackEntryCount() > 0 || salir){
+            stopService(new Intent(this, InvoiceService.class));
             super.onBackPressed();
-        else {
+        }else {
             salir = true;
             Snackbar.make(fl_home, "Press back again to exit", Snackbar.LENGTH_LONG)
                     .addCallback(new Snackbar.Callback() {

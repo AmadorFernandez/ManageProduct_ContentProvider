@@ -18,8 +18,11 @@ package com.afg.MngProductContentProvider.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +33,7 @@ import com.afg.MngProductContentProvider.Adapter.ListInvoiceAdapter;
 import com.afg.MngProductContentProvider.Presenter.HomeFragmentPresenter;
 import com.afg.MngProductContentProvider.Presenter.InvoicePresenter;
 import com.afg.MngProductContentProvider.R;
+import com.afg.MngProductContentProvider.Services.InvoiceService;
 import com.afg.MngProductContentProvider.interfaces.IInvoicePresenter;
 
 /**
@@ -38,14 +42,24 @@ import com.afg.MngProductContentProvider.interfaces.IInvoicePresenter;
 public class Home_Fragment extends Fragment implements IInvoicePresenter.View
 {
 
-    private HomeFragmentPresenter presenter;
+    private static HomeFragmentPresenter presenter;
     private ListView listView;
     private ListInvoiceAdapter adapter;
+
 
     public Home_Fragment() {
         // Required empty public constructor
     }
 
+    public static HomeFragmentPresenter getPresenter() {
+        return presenter;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +76,7 @@ public class Home_Fragment extends Fragment implements IInvoicePresenter.View
     @Override
     public void onStart() {
         super.onStart();
-        presenter.getAllInvoices();
+     //   presenter.getAllInvoices();
     }
 
     @Override

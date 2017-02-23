@@ -18,6 +18,7 @@ package com.afg.MngProductContentProvider.Fragments;
  *  jose.gallardo994@gmail.com
  */
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import android.widget.ListView;
 import com.afg.MngProductContentProvider.Adapter.ListInvoiceAdapter;
 import com.afg.MngProductContentProvider.Presenter.InvoicePresenter;
 import com.afg.MngProductContentProvider.R;
+import com.afg.MngProductContentProvider.Services.InvoiceService;
 import com.afg.MngProductContentProvider.interfaces.IInvoicePresenter;
 
 /**
@@ -45,7 +47,16 @@ public class Sales_Fragment extends Fragment implements IInvoicePresenter.View {
     private FloatingActionButton fab;
     private InvoicePresenter presenter;
     private ListInvoiceAdapter adapter;
+    private InvoiceService service;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+
+    }
 
     @Nullable
     @Override
